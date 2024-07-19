@@ -179,7 +179,7 @@ class _ScheduleAndLinks extends State<ScheduleAndLinks> {
             children: [
               department(context, "公共行政暨政策學系", _PA),
               department(context, "財政學系", _FINC),
-              department(context, "不動產與城鄉環境學系", _SW),
+              department(context, "不動產與城鄉環境學系", _REBE),
             ],
           ),
         );
