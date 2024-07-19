@@ -53,6 +53,7 @@ final Uri _LSM = Uri.parse('https://lsm.ntpu.edu.tw/');
 
 final Uri _LIB = Uri.parse('https://library.ntpu.edu.tw/masses/showMassesLogin;jsessionid=CC9DAA0BAF53597BF8B5A3B578E55512');
 final Uri _READ = Uri.parse('https://ireserve.lib.ntpu.edu.tw/sm/home_web.do?locale=zh_TW');
+
 //------slide menu跟主要畫面合併----------------------------------------------
 class TheBigTotalPage extends StatefulWidget {
   @override
@@ -276,15 +277,6 @@ class _the_total_page extends State<the_total_page> {
 
   //------建構服務項目專區----------------------------------------------------------------
 
-  //------主要畫面合併-------------------------------------------------------------------
-  List<Widget> _build_main_page() {
-    List<Widget> orderedContainers = [];
-    orderedContainers.add(_main_info());
-    orderedContainers.add(_build_main_service_page());
-    return orderedContainers;
-  }
-  //------主要畫面合併--------------------------------------------------------------------------------------
-
   //-----個人快速連結專區------------------------------------------------------------------------------------
   List<Widget> _build_hyper_link_list_in_main_page(){
     List<Widget> orderedContainers = [];
@@ -408,7 +400,7 @@ class _the_total_page extends State<the_total_page> {
       ),
     );
   }
-  Widget hyper_link_in_main_page(BuildContext context, String info, String info_picture, Uri link){
+  Widget hyper_link_in_main_page(BuildContext context, String info, String info_picture, Uri link){ //一般的快速連結
     return GestureDetector(
       onTap: () => _launchUrl(link),
       child:SizedBox(
@@ -449,7 +441,7 @@ class _the_total_page extends State<the_total_page> {
       ),
     );
   }
-  Widget hyper_link_department_in_main_page(BuildContext context, String info,String info_picture){
+  Widget hyper_link_department_in_main_page(BuildContext context, String info,String info_picture){ //為了"各系網站"所加的dialog
     return GestureDetector(
       onTap:(){
         _show_department_Dialog(context);
@@ -493,7 +485,7 @@ class _the_total_page extends State<the_total_page> {
     );
   }
 
-  Widget hyper_link_wanted_in_main_page(BuildContext context, String info_picture){
+  Widget hyper_link_wanted_in_main_page(BuildContext context, String info_picture){ //後面點選後會跳dialog的格子
     return GestureDetector(
       onTap:(){
         _showDialog(context);
@@ -533,241 +525,14 @@ class _the_total_page extends State<the_total_page> {
       ),
     );
   }
-  Widget department(BuildContext context,String name,Uri link){
-    double screenWidth = MediaQuery.of(context).size.width;
-    double textSize = screenWidth * 0.065;
-    return Padding(
-      padding: EdgeInsets.all(7.0),
-      child:SizedBox(
-          width: MediaQuery.of(context).size.width * 0.55,
-          height: MediaQuery.of(context).size.height * 0.12,
-          child: ElevatedButton(
-            onPressed:()=> _launchUrl(link),
-            child: Text(
-              name,
-              style:TextStyle(
-                fontSize: textSize,
-              ),
-            ),
-          )
-      ),
-    );
-  }
-  void _show_Humanities_Dialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text('人文學院'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  department(context,"中國文學系",_CL),
-                  department(context,"應用外語學系",_DAFL),
-                  department(context,"歷史學系",_HIS),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-  void _show_Bussiness_Dialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text('商學院'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  department(context,"會計學系",_ACC),
-                  department(context,"企業管理學系",_DBA),
-                  department(context,"金融與合作經營學系",_COOP),
-                  department(context,"統計學系",_STAT),
-                  department(context,"休閒運動管理學系",_LSM),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-  void _show_Social_Dialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text('社會科學學院'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  department(context,"經濟學系",_ECON),
-                  department(context,"社會學系",_SOC),
-                  department(context,"社會工作系",_SW),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-  void _show_Public_Dialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text('公共事務學院'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  department(context,"公共行政暨政策學系",_PA),
-                  department(context,"財政學系",_FINC),
-                  department(context,"不動產與城鄉環境學系",_REBE),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-  void _show_Computer_Dialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text('電機資訊學院'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  department(context,"電機工程學系",_EE),
-                  department(context,"資訊工程學系",_CS),
-                  department(context,"通訊工程學系",_CE),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-  Widget class_info(String name,VoidCallback path){
-    double screenWidth = MediaQuery.of(context).size.width;
-    double textSize = screenWidth * 0.07;
-    if(name.length==4) textSize = screenWidth * 0.045;
-    return SizedBox(
-      width:MediaQuery.of(context).size.width * 0.32,
-      height: 70,
-      child:ElevatedButton(
-        onPressed: path,
-          child: Text(
-            name,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: textSize,
-            ),
-          ),
-        ),
-    );
-  }
-  void _show_department_Dialog(context){
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text('選擇學院'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      class_info("人文", () {
-                        Navigator.of(context).pop();
-                        _show_Humanities_Dialog(context);
-                      }),
-                      SizedBox(width: 10),
-                      class_info("社會科學", () {
-                        Navigator.of(context).pop();
-                        _show_Social_Dialog(context);
-                      }),
-                    ],
-                  ),
-                  SizedBox(height: 15),
-                  Row(
-                      children: [
-                        class_info("商學", () {
-                          Navigator.of(context).pop();
-                          _show_Bussiness_Dialog(context);
-                        }),
-                        SizedBox(width: 10),
-                        class_info("公共事務", () {
-                          Navigator.of(context).pop();
-                          _show_Public_Dialog(context);
-                        }),
-                      ]
-                  ),
-                  SizedBox(height: 15),
-                  Row(
-                      children: [
-                        SizedBox(
-                          width:MediaQuery.of(context).size.width * 0.32,
-                          height: 70,
-                          child:ElevatedButton(
-                            onPressed: ()=> _launchUrl(_LAW),
-                            child: Text(
-                              "法律",
-                              style: TextStyle(
-                                fontSize: 28,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        class_info("電機資訊", () {
-                          Navigator.of(context).pop();
-                          _show_Computer_Dialog(context);
-                        }),
-                      ]
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
+
+  //給個人快速連結update的處理法
   void updateMainScreen(List<bool> newHyperLinkIsOn) {//------不知道為何有了這句就跑得動了???????----------
     setState(() {
       hyper_link_is_on = List.from(newHyperLinkIsOn);
     });
   }
-
-  Widget hyper_list_dialog_info(String name){
-    return Text(
-      name,
-      style: TextStyle(
-        fontSize: 22,
-      ),
-    );
-  }
-  void _showDialog(BuildContext context) {
+  void _showDialog(BuildContext context) { // 給新增個人連結項目的dialog
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -784,21 +549,21 @@ class _the_total_page extends State<the_total_page> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        hyper_list_dialog_info("數位學院3.0"),
-                        Checkbox(
-                          value: localHyperLinkIsOn[0],
-                          activeColor: Colors.red,
-                          onChanged: (value) {
-                            setState(() {
-                              localHyperLinkIsOn[0] = value!;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      hyper_list_dialog_info("數位學院3.0"),
+                      Checkbox(
+                        value: localHyperLinkIsOn[0],
+                        activeColor: Colors.red,
+                        onChanged: (value) {
+                          setState(() {
+                            localHyperLinkIsOn[0] = value!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -951,10 +716,248 @@ class _the_total_page extends State<the_total_page> {
       },
     );
   }
+
+  //處理"各系網站"的dialog
+  Widget department(BuildContext context,String name,Uri link){//"各系網站"所加的dialog part 1 統一規格
+    double screenWidth = MediaQuery.of(context).size.width;
+    double textSize = screenWidth * 0.065;
+    return Padding(
+      padding: EdgeInsets.all(7.0),
+      child:SizedBox(
+          width: MediaQuery.of(context).size.width * 0.55,
+          height: MediaQuery.of(context).size.height * 0.12,
+          child: ElevatedButton(
+            onPressed:()=> _launchUrl(link),
+            child: Text(
+              name,
+              style:TextStyle(
+                fontSize: textSize,
+              ),
+            ),
+          )
+      ),
+    );
+  }
+  Widget class_info(String name,VoidCallback path){//"各系網站"所加的dialog中part 2每個學系的統一規格
+    double screenWidth = MediaQuery.of(context).size.width;
+    double textSize = screenWidth * 0.07;
+    if(name.length==4) textSize = screenWidth * 0.045;
+    return SizedBox(
+      width:MediaQuery.of(context).size.width * 0.32,
+      height: 70,
+      child:ElevatedButton(
+        onPressed: path,
+        child: Text(
+          name,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: textSize,
+          ),
+        ),
+      ),
+    );
+  }
+  void _show_department_Dialog(context){//"各系網站"所加的dialog part 1
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('選擇學院'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      class_info("人文", () {
+                        Navigator.of(context).pop();
+                        _show_Humanities_Dialog(context);
+                      }),
+                      SizedBox(width: 10),
+                      class_info("社會科學", () {
+                        Navigator.of(context).pop();
+                        _show_Social_Dialog(context);
+                      }),
+                    ],
+                  ),
+                  SizedBox(height: 15),
+                  Row(
+                      children: [
+                        class_info("商學", () {
+                          Navigator.of(context).pop();
+                          _show_Bussiness_Dialog(context);
+                        }),
+                        SizedBox(width: 10),
+                        class_info("公共事務", () {
+                          Navigator.of(context).pop();
+                          _show_Public_Dialog(context);
+                        }),
+                      ]
+                  ),
+                  SizedBox(height: 15),
+                  Row(
+                      children: [
+                        SizedBox(
+                          width:MediaQuery.of(context).size.width * 0.32,
+                          height: 70,
+                          child:ElevatedButton(
+                            onPressed: ()=> _launchUrl(_LAW),
+                            child: Text(
+                              "法律",
+                              style: TextStyle(
+                                fontSize: 28,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        class_info("電機資訊", () {
+                          Navigator.of(context).pop();
+                          _show_Computer_Dialog(context);
+                        }),
+                      ]
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+  void _show_Humanities_Dialog(BuildContext context) {//"各系網站"所加的dialog part 2
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('人文學院'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  department(context,"中國文學系",_CL),
+                  department(context,"應用外語學系",_DAFL),
+                  department(context,"歷史學系",_HIS),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+  void _show_Bussiness_Dialog(BuildContext context) {//"各系網站"所加的dialog part 2
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('商學院'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  department(context,"會計學系",_ACC),
+                  department(context,"企業管理學系",_DBA),
+                  department(context,"金融與合作經營學系",_COOP),
+                  department(context,"統計學系",_STAT),
+                  department(context,"休閒運動管理學系",_LSM),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+  void _show_Social_Dialog(BuildContext context) {//"各系網站"所加的dialog part 2
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('社會科學學院'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  department(context,"經濟學系",_ECON),
+                  department(context,"社會學系",_SOC),
+                  department(context,"社會工作系",_SW),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+  void _show_Public_Dialog(BuildContext context) {//"各系網站"所加的dialog part 2
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('公共事務學院'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  department(context,"公共行政暨政策學系",_PA),
+                  department(context,"財政學系",_FINC),
+                  department(context,"不動產與城鄉環境學系",_REBE),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+  void _show_Computer_Dialog(BuildContext context) {//"各系網站"所加的dialog part 2
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('電機資訊學院'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  department(context,"電機工程學系",_EE),
+                  department(context,"資訊工程學系",_CS),
+                  department(context,"通訊工程學系",_CE),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+  Widget hyper_list_dialog_info(String name){
+    return Text(
+      name,
+      style: TextStyle(
+        fontSize: 22,
+      ),
+    );
+  }
   //-----個人快速連結專區------------------------------------------------------------------------------------
 
+  //------主要畫面合併-------------------------------------------------------------------
+  List<Widget> _build_main_page() {
+    List<Widget> orderedContainers = [];
+    orderedContainers.add(_main_info());
+    orderedContainers.add(_build_main_service_page());
+    return orderedContainers;
+  }
+  //------主要畫面合併--------------------------------------------------------------------------------------
 
-  //----整體建構------------------------------------------------------------------------------------------------
+  //----整體建構(畫面與appbar等功能結合)------------------------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -992,7 +995,7 @@ class _the_total_page extends State<the_total_page> {
     );
   }
 }
-
+//----整體建構(畫面與appbar等功能結合)-----------------------------------------------------------------------------
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
