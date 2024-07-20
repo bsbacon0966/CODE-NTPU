@@ -1,4 +1,5 @@
 //嗨嗨李彥廷，我寫的很亂，有空再跟你說我怎麼用的
+//哈哈
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -94,12 +95,12 @@ class _the_total_page extends State<the_total_page> {
     return Column(
       children: [
         SizedBox(
-          height: 30,
+          height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Opacity(
-                opacity: 0.6,
+                opacity: 1,
                 child: Row(
                   children: [
                     Padding(
@@ -112,26 +113,23 @@ class _the_total_page extends State<the_total_page> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 5.0),
+                    SizedBox(width: 6.0),
                     Text(
                       "佈告欄",
                       style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.black,
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                width: 10,
-              )
             ],
           ),
         ),
         FractionallySizedBox(
-          widthFactor: 0.92,
+          widthFactor: 1,
           child: SizedBox(
             height: 200.0,
             width: 500.0,
@@ -142,21 +140,24 @@ class _the_total_page extends State<the_total_page> {
               ],
               dotSize: 4.0,
               dotSpacing: 15.0,
-              dotColor: Colors.lightGreenAccent,
+              dotColor: Colors.lightBlue.shade100,
               indicatorBgPadding: 5.0,
-              dotBgColor: Colors.purple.withOpacity(0.1),
+              dotBgColor: Colors.white.withOpacity(0),
               borderRadius: true,
+              boxFit: BoxFit.fill,
+              overlayShadow: true,
+              overlayShadowColors: Colors.lightBlue.shade50,
             ),
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 20),
         SizedBox(
-          height: 30,
+          height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Opacity(
-                opacity: 0.6,
+                opacity: 1.0,
                 child: Row(
                   children: [
                     Padding(
@@ -173,9 +174,8 @@ class _the_total_page extends State<the_total_page> {
                     Text(
                       "個人快速連結",
                       style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ],
@@ -191,14 +191,14 @@ class _the_total_page extends State<the_total_page> {
             children: _build_hyper_link_list_in_main_page(),
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 20),
         SizedBox(
-          height: 30,
+          height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Opacity(
-                opacity: 0.6,
+                opacity: 1.0,
                 child: Row(
                   children: [
                     Padding(
@@ -215,9 +215,8 @@ class _the_total_page extends State<the_total_page> {
                     Text(
                       "服務項目",
                       style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ],
@@ -326,7 +325,7 @@ class _the_total_page extends State<the_total_page> {
     );
     return orderedContainers;
   }
-  Widget _buildContainer(int id, Color? color, String text, String imagePath,Widget path) {
+  Widget _buildContainer(int id, Color? color, String text, String imagePath,Widget path) {   //服務項目
     return FractionallySizedBox(
       widthFactor: 0.92,
       child: GestureDetector(
@@ -406,7 +405,7 @@ class _the_total_page extends State<the_total_page> {
       child:SizedBox(
         width: MediaQuery.of(context).size.width * 0.30,
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.20,
+          height: MediaQuery.of(context).size.height * 0.30,
           decoration: BoxDecoration(
             color: Colors.blue[100],
             borderRadius: BorderRadius.circular(15.0),
@@ -447,7 +446,7 @@ class _the_total_page extends State<the_total_page> {
         _show_department_Dialog(context);
       },
       child:SizedBox(
-        width: MediaQuery.of(context).size.width * 0.30,
+        width: MediaQuery.of(context).size.width * 0.3,
         child: Container(
           height: MediaQuery.of(context).size.height * 0.20,
           decoration: BoxDecoration(
@@ -979,6 +978,12 @@ class _the_total_page extends State<the_total_page> {
         ),
       ),
       body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/main_background.png"),
+              fit: BoxFit.fill,
+            ),
+        ),
         alignment: Alignment.topCenter,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -1012,6 +1017,7 @@ class MyApp extends StatelessWidget {
             color: Colors.blue,
           )
       ),
+
       debugShowCheckedModeBanner: false,
       home: TheBigTotalPage(),
     );
