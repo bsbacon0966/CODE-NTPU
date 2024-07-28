@@ -2,15 +2,19 @@
 
 A new Flutter project.
 
-## Getting Started
+# 版本更新狀況
+## 現有功能(ver 4.3)
+- Firebase auth、Firebase儲存個人資訊，以及常用操作(Example:pinned最愛使用的服務項目)
+- 帳號建立以及登入介面
+- 行事曆功能，拖動月份查看當前學校月份事件(也提供新生按鈕以區分事件)(註:行事曆有部分資訊僅通知新生)
+- 個人課表功能，新增與刪除課程以更容易查看
+- 統整北大學生常用連結，並且開放「個人常用連結專區」，新增與刪除個人常用的網站連結，提升個人使用體驗
+- 服務專區建立，統一現有App可以提供的服務(Example:惜福專區、社團活動宣傳等)
 
-This project is a starting point for a Flutter application.
+## 預計更新功能
+- 服務專區功能完全建立(惜福專區、社團活動宣傳、愛心傘借助與歸還)
+- 首頁佈告欄展示資訊連上Firebase，以更好推撥與更新資訊
+- 個人課表功能更新"更好的操作方式以及更新自定義事件"
+- 開發管理者版本App，已更加進行管理資訊(服務專區預計將由管理者管理使用者操作情況，Example:封鎖不當資訊、管理當前愛心傘使用狀況等)
+- 個人資訊頁面與個性化調整選擇(Example:多語言選擇等)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
