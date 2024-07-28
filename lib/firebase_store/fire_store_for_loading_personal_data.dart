@@ -32,21 +32,21 @@ Future<void> updateUserFavoriteService() async {
     });
   }
 }
-
+//["課程",1,9,0,3, "WEEKLY", 1, "MO", "多媒體技術", "資B104",2],
 Future<void> updateUserPersonalSchedule() async { //將dynamic的資料型態轉成map並給每個元素分別上標籤
   if (currentUser != null) {
     List<Map<String, dynamic>> flattenedSchedule = personal_schedule_info.map((task) {
       return {
         "type": task[0],
-        "day": task[1],
+        "semester": task[1],
         "start_hour": task[2],
-        "end_hour": task[3],
-        "frequency": task[4],
-        "duration": task[5],
-        "day_abbr": task[6],
-        "title": task[7],
-        "location": task[8],
-        "start_class":task[9],
+        "start_minute": task[3],
+        "duration_hours": task[4],
+        "day_abbr": task[5],
+        "interval": task[6],
+        "day": task[7],
+        "class_info":task[8],
+        "class_location":task[9],
         "class_duration":task[10],
       };
     }).toList();//將多樣事物轉成list
@@ -64,15 +64,15 @@ Future<void> updateUserPersonalScheduleDelete() async { //將dynamic的資料型
     List<Map<String, dynamic>> flattenedSchedule = personal_schedule_info_delete.map((task) {
       return {
         "type": task[0],
-        "day": task[1],
+        "semester": task[1],
         "start_hour": task[2],
-        "end_hour": task[3],
-        "frequency": task[4],
-        "duration": task[5],
-        "day_abbr": task[6],
-        "title": task[7],
-        "location": task[8],
-        "start_class":task[9],
+        "start_minute": task[3],
+        "duration_hours": task[4],
+        "day_abbr": task[5],
+        "interval": task[6],
+        "day": task[7],
+        "class_info":task[8],
+        "class_location":task[9],
         "class_duration":task[10],
       };
     }).toList();//將多樣事物轉成list
@@ -103,15 +103,15 @@ Future<void> loadUserPersonalScheduleDelete() async {
       personal_schedule_info_delete = scheduleData.map((task) { // 把map拆回成List<dynamic>
         return [
           task["type"],
-          task["day"],
+          task["semester"],
           task["start_hour"],
-          task["end_hour"],
-          task["frequency"],
-          task["duration"],
+          task["start_minute"],
+          task["duration_hours"],
           task["day_abbr"],
-          task["title"],
-          task["location"],
-          task["start_class"],
+          task["interval"],
+          task["day"],
+          task["class_info"],
+          task["class_location"],
           task["class_duration"],
         ];
       }).toList();
@@ -127,14 +127,16 @@ Future<void> loadUserPersonalSchedule() async {
       personal_schedule_info = scheduleData.map((task) { // 把map拆回成List<dynamic>
         return [
           task["type"],
-          task["day"],
+          task["semester"],
           task["start_hour"],
-          task["end_hour"],
-          task["frequency"],
-          task["duration"],
+          task["start_minute"],
+          task["duration_hours"],
           task["day_abbr"],
-          task["title"],
-          task["location"],
+          task["interval"],
+          task["day"],
+          task["class_info"],
+          task["class_location"],
+          task["class_duration"],
         ];
       }).toList();
     }

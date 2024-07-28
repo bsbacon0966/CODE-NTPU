@@ -6,9 +6,9 @@ import '../../firebase_store/fire_store_for_loading_personal_data.dart';
 import 'SchoolTableTimeAddTasks.dart';
 import 'SchoolTableTimeDeleteTasks.dart';
 
-//["課程",1, 9, 12, "WEEKLY", 1, "MO", "多媒體技術", "資B104"], //tag,semester,start_time_hours,end_time_hours,frequency,以(日/周)當作循環,byDays,class_name,class_location
-//["通識",1, 14, 17, "WEEKLY", 1, "TU", "線性代數", "電104"],
-//["課程",1, 9, 12, "WEEKLY", 1, "WE", "進階資料結構", "資B104"],
+//["課程",1,9,0,3, "WEEKLY", 1, "MO", "多媒體技術", "資B104",2], //tag,semester,start_time_hours,start_time_minutes,duration_hours,frequency,以(日/周)當作循環,byDays,class_name,class_location
+//["通識",1,14,0,3, "WEEKLY", 1, "TU", "線性代數", "電104"],
+//["課程",1,9,0,1, "WEEKLY", 1, "WE", "進階資料結構", "資B104"],
 List<List<dynamic>> personal_schedule_info = [];
 
 class Schooltabletime extends StatefulWidget {
@@ -51,6 +51,8 @@ class _SchooltabletimeState extends State<Schooltabletime> {
             info[6],
             info[7],
             info[8],
+            info[9],
+            info[10],
           )
       );
     }
@@ -138,7 +140,7 @@ class _SchooltabletimeState extends State<Schooltabletime> {
               top: 6.0,
               right: 120.0,
               child: SizedBox(
-                width: 100.0, // 設置寬度
+                width: 80.0, // 設置寬度
                 height: 40.0, // 設置高度
                 child: FloatingActionButton(
                   backgroundColor: Color(0xff95b0ce),
@@ -165,68 +167,110 @@ class _SchooltabletimeState extends State<Schooltabletime> {
 List<Appointment> getAppointments(
     String tag,
     int semester,
-    int start_time_hours,
-    int end_time_hours,
+    int start_hours,
+    int start_minute,
+    int duration_hours,
     String frequency,
     int interval,
     String byDays,
-    String class_name,
-    String class_location
+    String class_info,
+    String class_location,
+    int class_duration,
     ) {
   List<Appointment> appointments = [];
-  if(tag == "課程"){
+  if(semester==1){
     final DateTime semester_startRange = DateTime(2024, 9, 9);
     final DateTime semester_endRange = DateTime(2024, 12, 29);
-    final DateTime startTime = DateTime(
-        semester_startRange.year,
-        semester_startRange.month,
-        semester_startRange.day,
-        start_time_hours,
-        0
-    );
-    final DateTime endTime = DateTime(
-        semester_startRange.year,
-        semester_startRange.month,
-        semester_startRange.day,
-        end_time_hours,
-        0
-    );
-    appointments.add(
-      Appointment(
-        startTime: startTime,
-        endTime: endTime,
-        subject: "$class_name\n$class_location",
-        color: Color(0xff95b0ce),
-        recurrenceRule: 'FREQ=$frequency;INTERVAL=$interval;BYDAY=$byDays;UNTIL=${semester_endRange.toUtc().toIso8601String()}',
-      ),
-    );
-  }
-  else if(tag == "通識"){
-    final DateTime semester_startRange = DateTime(2024, 9, 9);
-    final DateTime semester_endRange = DateTime(2024, 12, 29);
-    final DateTime startTime = DateTime(
-        semester_startRange.year,
-        semester_startRange.month,
-        semester_startRange.day,
-        start_time_hours,
-        0
-    );
-    final DateTime endTime = DateTime(
-        semester_startRange.year,
-        semester_startRange.month,
-        semester_startRange.day,
-        end_time_hours,
-        0
-    );
-    appointments.add(
-      Appointment(
-        startTime: startTime,
-        endTime: endTime,
-        subject: "$class_name\n$class_location",
-        color: Color(0xffa1bade),
-        recurrenceRule: 'FREQ=$frequency;INTERVAL=$interval;BYDAY=$byDays;UNTIL=${semester_endRange.toUtc().toIso8601String()}',
-      ),
-    );
+    if(tag == "課程"){
+      final DateTime startTime;
+      final DateTime endTime;
+      if(class_duration==10){
+        startTime = DateTime(
+          semester_startRange.year,
+          semester_startRange.month,
+          semester_startRange.day,
+          18,
+          30,
+        );
+        endTime = DateTime(
+          semester_startRange.year,
+          semester_startRange.month,
+          semester_startRange.day,
+          21,
+          10,
+        );
+      }
+      else{
+        startTime = DateTime(
+          semester_startRange.year,
+          semester_startRange.month,
+          semester_startRange.day,
+          start_hours,
+          start_minute,
+        );
+        endTime = DateTime(
+          semester_startRange.year,
+          semester_startRange.month,
+          semester_startRange.day,
+          start_hours+duration_hours,
+          start_minute,
+        );
+      }
+      appointments.add(
+        Appointment(
+          startTime: startTime,
+          endTime: endTime,
+          subject: "$class_info\n$class_location",
+          color: Color(0xff95b0ce),
+          recurrenceRule: 'FREQ=$frequency;INTERVAL=$interval;BYDAY=$byDays;UNTIL=${semester_endRange.toUtc().toIso8601String()}',
+        ),
+      );
+    }
+    else if(tag == "通識"){
+      final DateTime startTime;
+      final DateTime endTime;
+      if(class_duration==10){
+        startTime = DateTime(
+          semester_startRange.year,
+          semester_startRange.month,
+          semester_startRange.day,
+          18,
+          30,
+        );
+        endTime = DateTime(
+          semester_startRange.year,
+          semester_startRange.month,
+          semester_startRange.day,
+          21,
+          10,
+        );
+      }
+      else{
+        startTime = DateTime(
+          semester_startRange.year,
+          semester_startRange.month,
+          semester_startRange.day,
+          start_hours,
+          start_minute,
+        );
+        endTime = DateTime(
+          semester_startRange.year,
+          semester_startRange.month,
+          semester_startRange.day,
+          start_hours+duration_hours,
+          start_minute,
+        );
+      }
+      appointments.add(
+        Appointment(
+          startTime: startTime,
+          endTime: endTime,
+          subject: "$class_info\n$class_location",
+          color: Color(0xffa1bade),
+          recurrenceRule: 'FREQ=$frequency;INTERVAL=$interval;BYDAY=$byDays;UNTIL=${semester_endRange.toUtc().toIso8601String()}',
+        ),
+      );
+    }
   }
   return appointments;
 }

@@ -92,12 +92,6 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
             ),
             SizedBox(height: 16),
-            /*ElevatedButton(
-              onPressed: () {
-                Get.to(() => RegisterPage(), transition: Transition.rightToLeft);
-              },
-              child: Text("register"),
-            ),*/
             Container(
               width: MediaQuery.of(context).size.width * 0.90,
               height: 60,

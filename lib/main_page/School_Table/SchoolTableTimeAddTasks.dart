@@ -34,15 +34,16 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
     // semester
     submit_tasks.add(1);
 
-    // start_time & end_time
+    // start_time & duration
     int courseStartInt = int.tryParse(courseStart) ?? 0;
     if (courseStartInt <= 4) {
       submit_tasks.add(courseStartInt + 7);
-      submit_tasks.add(courseStartInt + _selected_class_duration + 7);
+      submit_tasks.add(0);
     } else {
       submit_tasks.add(courseStartInt + 8);
-      submit_tasks.add(courseStartInt + _selected_class_duration + 8);
+      submit_tasks.add(0);
     }
+    submit_tasks.add(_selected_class_duration);
 
     submit_tasks.add("WEEKLY"); // frequency
     submit_tasks.add(1); // frequency interval
@@ -59,7 +60,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
     submit_tasks.add(courseLocation);
 
     submit_tasks.add(courseStartInt);
-    submit_tasks.add(_selected_class_duration);
+
     widget.onSubmit(submit_tasks);
     Navigator.pop(context);
   }
@@ -254,7 +255,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                         child: TextFormField(
                           controller: _courseStartController,
                           decoration: InputDecoration(
-                            hintText: 'Example:(上午第二節=>2),(下午第三節=>7)',
+                            hintText: '(上午第二節=>2),(下午第三節=>7),(晚上=>10)',
                             border: OutlineInputBorder(),
                           ),
                         ),
