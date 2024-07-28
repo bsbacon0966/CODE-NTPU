@@ -1,13 +1,166 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:interviewer/main_page/School_Table/SchoolTableTimeDeleteTasks.dart';
 import 'package:interviewer/main_page/main_first.dart';
 import 'package:interviewer/personal_menu/Personal_Menu.dart';
+import 'package:interviewer/main_page/main_second.dart';
 
+import '../main_page/School_Table/SchoolTableTime.dart';
 final User? currentUser = FirebaseAuth.instance.currentUser;
 Future<DocumentSnapshot<Map<String,dynamic>>> getUserDetail() async{
   return await FirebaseFirestore.instance.collection("Users").doc(currentUser!.email).get();
 }
 
+Future<void> updateUserHyperlink() async {
+  if (currentUser != null) {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(currentUser!.email)
+        .update({
+      "favorite_hyperlink": hyper_link_is_on,
+    });
+  }
+}
+
+Future<void> updateUserFavoriteService() async {
+  if (currentUser != null) {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(currentUser!.email)
+        .update({
+      "favorite_service": pinned,
+    });
+  }
+}
+
+Future<void> updateUserPersonalSchedule() async { //將dynamic的資料型態轉成map並給每個元素分別上標籤
+  if (currentUser != null) {
+    List<Map<String, dynamic>> flattenedSchedule = personal_schedule_info.map((task) {
+      return {
+        "type": task[0],
+        "day": task[1],
+        "start_hour": task[2],
+        "end_hour": task[3],
+        "frequency": task[4],
+        "duration": task[5],
+        "day_abbr": task[6],
+        "title": task[7],
+        "location": task[8],
+        "start_class":task[9],
+        "class_duration":task[10],
+      };
+    }).toList();//將多樣事物轉成list
+
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(currentUser!.email)
+        .update({
+      "personal_schedule": flattenedSchedule,
+    });
+  }
+}
+Future<void> updateUserPersonalScheduleDelete() async { //將dynamic的資料型態轉成map並給每個元素分別上標籤
+  if (currentUser != null) {
+    List<Map<String, dynamic>> flattenedSchedule = personal_schedule_info_delete.map((task) {
+      return {
+        "type": task[0],
+        "day": task[1],
+        "start_hour": task[2],
+        "end_hour": task[3],
+        "frequency": task[4],
+        "duration": task[5],
+        "day_abbr": task[6],
+        "title": task[7],
+        "location": task[8],
+        "start_class":task[9],
+        "class_duration":task[10],
+      };
+    }).toList();//將多樣事物轉成list
+
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(currentUser!.email)
+        .update({
+      "personal_schedule": flattenedSchedule,
+    });
+  }
+}
+
+Future<void> loadUserHyperlink() async {
+  if (currentUser != null) {
+    DocumentSnapshot<Map<String, dynamic>> doc = await getUserDetail();
+    if (doc.exists) {
+      List<dynamic> favoriteHyperlink = doc.data()?['favorite_hyperlink'];
+      hyper_link_is_on = List<bool>.from(favoriteHyperlink);
+    }
+  }
+}
+Future<void> loadUserPersonalScheduleDelete() async {
+  if (currentUser != null) {
+    DocumentSnapshot<Map<String, dynamic>> doc = await getUserDetail();
+    if (doc.exists) {
+      List<dynamic> scheduleData = doc.data()?['personal_schedule'] ?? [];
+      personal_schedule_info_delete = scheduleData.map((task) { // 把map拆回成List<dynamic>
+        return [
+          task["type"],
+          task["day"],
+          task["start_hour"],
+          task["end_hour"],
+          task["frequency"],
+          task["duration"],
+          task["day_abbr"],
+          task["title"],
+          task["location"],
+          task["start_class"],
+          task["class_duration"],
+        ];
+      }).toList();
+    }
+  }
+}
+
+Future<void> loadUserPersonalSchedule() async {
+  if (currentUser != null) {
+    DocumentSnapshot<Map<String, dynamic>> doc = await getUserDetail();
+    if (doc.exists) {
+      List<dynamic> scheduleData = doc.data()?['personal_schedule'] ?? [];
+      personal_schedule_info = scheduleData.map((task) { // 把map拆回成List<dynamic>
+        return [
+          task["type"],
+          task["day"],
+          task["start_hour"],
+          task["end_hour"],
+          task["frequency"],
+          task["duration"],
+          task["day_abbr"],
+          task["title"],
+          task["location"],
+        ];
+      }).toList();
+    }
+  }
+}
+
+Future<void> loadUserFavoriteService() async {
+  if (currentUser != null) {
+    DocumentSnapshot<Map<String, dynamic>> doc = await getUserDetail();
+    if (doc.exists) {
+      List<dynamic> favoriteService = doc.data()?['favorite_service'];
+      pinned = List<bool>.from(favoriteService);
+    }
+  }
+}
+
+Future<void> loadUserSchoolID() async {
+  if (currentUser != null) {
+    DocumentSnapshot<Map<String, dynamic>> doc = await getUserDetail();
+    if (doc.exists) {
+      schoolID_on_menu = doc.data()?['schoolID'];
+    }
+  }
+}
+
+/*
 Future<void> updateUserHyperlink() async {
   if (currentUser != null) {
     await FirebaseFirestore.instance
@@ -25,15 +178,24 @@ Future<void> loadUserHyperlink() async {
     if (doc.exists) {
       List<dynamic> favoriteHyperlink = doc.data()?['favorite_hyperlink'];
       hyper_link_is_on = List<bool>.from(favoriteHyperlink);
+
+      // 檢查和補齊長度
+      while (hyper_link_is_on.length < 4) {
+        hyper_link_is_on.add(false);
+      }
+
+      // 如果有更新，保存回Firestore
+      if (favoriteHyperlink.length < 4) {
+        await updateUserHyperlink();
+      }
     }
   }
 }
 
-Future<void> loadUserSchoolID() async {
-  if (currentUser != null) {
-    DocumentSnapshot<Map<String, dynamic>> doc = await getUserDetail();
-    if (doc.exists) {
-      schoolID_on_menu = doc.data()?['schoolID'];
-    }
-  }
+Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetail() async {
+  return await FirebaseFirestore.instance
+      .collection("Users")
+      .doc(currentUser!.email)
+      .get();
 }
+ */

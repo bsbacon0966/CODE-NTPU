@@ -1,6 +1,3 @@
-//------slide menu跟主要畫面合併----------------------------------------------
-
-
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,13 +12,24 @@ import '../main_page/schedule.dart';
 import '../personal_menu/Personal_Menu.dart';
 
 class TheBigTotalPage extends StatefulWidget {
+  final int selectedIndex;
+
+  TheBigTotalPage({Key? key, this.selectedIndex = 0}) : super(key: key);
+
   @override
   _TheBigTotalPageState createState() => _TheBigTotalPageState();
 }
 
 class _TheBigTotalPageState extends State<TheBigTotalPage> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
   bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex;  // Initialize _selectedIndex with the passed argument
+    loadUserData();
+  }
 
   Future<void> loadUserData() async {
     await loadUserHyperlink();
@@ -29,12 +37,6 @@ class _TheBigTotalPageState extends State<TheBigTotalPage> {
     setState(() {
       isLoading = false;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadUserData();
   }
 
   void _onItemTapped(int index) {

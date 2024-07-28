@@ -61,13 +61,7 @@ final Uri _LSM = Uri.parse('https://lsm.ntpu.edu.tw/');
 final Uri _LIB = Uri.parse('https://library.ntpu.edu.tw/masses/showMassesLogin;jsessionid=CC9DAA0BAF53597BF8B5A3B578E55512');
 final Uri _READ = Uri.parse('https://ireserve.lib.ntpu.edu.tw/sm/home_web.do?locale=zh_TW');
 
-
-
-
-
 List<bool> hyper_link_is_on = [true, true, true, true, false, false, false, false, false, false];
-
-
 
 class the_total_page extends StatefulWidget {
   @override
@@ -124,7 +118,7 @@ class _the_total_page extends State<the_total_page> {
               children: [
                 Container(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0), // 设置圆角半径
+                    borderRadius: BorderRadius.circular(20.0),
                     child: Image.asset(
                       "assets/Logo.gif",
                       fit: BoxFit.cover,

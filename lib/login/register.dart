@@ -28,6 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
           "schoolID":schoolID,
           "favorite_hyperlink":[true, true, true, true, false, false, false, false, false, false],
           "favorite_service":[false, false, false, false, false],
+          "personal_schedule":[],
         });
   }
 
@@ -129,10 +130,46 @@ class _RegisterPageState extends State<RegisterPage> {
               obscureText: true,
             ),
             SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: registerForUser,
-              child: Text("Sign Up"),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.90,
+              height: 60,
+              child: ElevatedButton(
+                onPressed: registerForUser,
+                child: Text(
+                  "Sign up",
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: Colors.black45,
+                  ),
+                ),
+              ),
             ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Already have an account? ",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xff739abe),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => LoginPage(), transition: Transition.rightToLeft);
+                  },
+                  child: Text(
+                    " Login here!",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xff739abe),
+                    ),
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),

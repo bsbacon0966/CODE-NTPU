@@ -10,33 +10,56 @@ class Schooltabletimeaddtasks extends StatefulWidget {
 }
 
 class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
-  int _selectedDay = 1;
+  int _selectedDay = 0;
   int _selectedType = 0;
   int _selected_class_duration = 1;
+  final TextEditingController _courseStartController = TextEditingController();
+  final TextEditingController _courseLocationController = TextEditingController();
+  final TextEditingController _courseNameController = TextEditingController();
 
   void _handleSubmit() {
-    print("Selected Type: $_selectedType");
-    print("Selected Day: $_selectedDay");
-    print("Selected Class Duration: $_selected_class_duration");
+    String courseStart = _courseStartController.text;
+    String courseLocation = _courseLocationController.text;
+    String courseName = _courseNameController.text;
 
     List<dynamic> submit_tasks = [];
-    if(_selectedType==0) submit_tasks.add("課程");
-    else if(_selectedType==1)submit_tasks.add("通識");
-    submit_tasks.add(1);
-    submit_tasks.add(9);
-    submit_tasks.add(12);
-    submit_tasks.add("WEEKLY");
-    submit_tasks.add(1);
-    if(_selectedDay==0) submit_tasks.add("MO");
-    else if(_selectedDay==1)submit_tasks.add("TU");
-    else if(_selectedDay==2)submit_tasks.add("WE");
-    else if(_selectedDay==3)submit_tasks.add("THU");
-    else if(_selectedDay==4)submit_tasks.add("FRI");
 
-    submit_tasks.add("測試用");
-    submit_tasks.add("哈哈");
+    // tag
+    if (_selectedType == 0) {
+      submit_tasks.add("課程");
+    } else if (_selectedType == 1) {
+      submit_tasks.add("通識");
+    }
 
-    print(submit_tasks);
+    // semester
+    submit_tasks.add(1);
+
+    // start_time & end_time
+    int courseStartInt = int.tryParse(courseStart) ?? 0;
+    if (courseStartInt <= 4) {
+      submit_tasks.add(courseStartInt + 7);
+      submit_tasks.add(courseStartInt + _selected_class_duration + 7);
+    } else {
+      submit_tasks.add(courseStartInt + 8);
+      submit_tasks.add(courseStartInt + _selected_class_duration + 8);
+    }
+
+    submit_tasks.add("WEEKLY"); // frequency
+    submit_tasks.add(1); // frequency interval
+
+    // 哪一天
+    if (_selectedDay == 0) submit_tasks.add("MO");
+    else if (_selectedDay == 1) submit_tasks.add("TU");
+    else if (_selectedDay == 2) submit_tasks.add("WE");
+    else if (_selectedDay == 3) submit_tasks.add("THU");
+    else if (_selectedDay == 4) submit_tasks.add("FRI");
+
+    // class_info && location
+    submit_tasks.add(courseName);
+    submit_tasks.add(courseLocation);
+
+    submit_tasks.add(courseStartInt);
+    submit_tasks.add(_selected_class_duration);
     widget.onSubmit(submit_tasks);
     Navigator.pop(context);
   }
@@ -62,7 +85,14 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("正課/通識"),
+                Text(
+                    "正課/通識",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff739abe),
+                  ),
+                ),
                 SizedBox(width: 1,),
               ],
             ),
@@ -80,6 +110,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                           _selectedType = value!;
                         });
                       },
+                      activeColor: Color(0xff739abe),
                     ),
                     Text(
                       type[index],
@@ -93,14 +124,22 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("課程在星期幾"),
+                Text(
+                    "課程在星期幾",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff739abe),
+                  ),
+                ),
                 SizedBox(width: 1,),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(5, (index) {
-                int day = index + 1;
+                int day = index;
+                int print_day = day+1;
                 return Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -112,19 +151,28 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                           _selectedDay = value!;
                         });
                       },
+                      activeColor: Color(0xff739abe),
                     ),
                     Text(
-                      '$day',
+                      '$print_day',
                       style: TextStyle(fontSize: 22),
                     ),
                   ],
                 );
               }),
             ),
+            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("輸入課程名稱"),
+                Text(
+                    "輸入課程名稱",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff739abe),
+                  ),
+                ),
                 SizedBox(width: 1,),
               ],
             ),
@@ -136,6 +184,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                       child: Opacity(
                         opacity: 0.7,
                         child: TextFormField(
+                          controller: _courseNameController,
                           decoration: InputDecoration(
                             hintText: 'Example:多媒體技術與應用',
                             border: OutlineInputBorder(),
@@ -150,7 +199,14 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("輸入課程地點"),
+                Text(
+                    "輸入課程地點",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff739abe),
+                  ),
+                ),
                 SizedBox(width: 1,),
               ],
             ),
@@ -162,6 +218,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                       child: Opacity(
                         opacity: 0.7,
                         child: TextFormField(
+                          controller: _courseLocationController,
                           decoration: InputDecoration(
                             hintText: 'Example:電405',
                             border: OutlineInputBorder(),
@@ -172,10 +229,18 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                 ],
               ),
             ),
+            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("課程開始在第幾堂"),
+                Text(
+                    "課程開始在第幾堂",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff739abe),
+                  ),
+                ),
                 SizedBox(width: 1,),
               ],
             ),
@@ -187,6 +252,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                       child: Opacity(
                         opacity: 0.7,
                         child: TextFormField(
+                          controller: _courseStartController,
                           decoration: InputDecoration(
                             hintText: 'Example:(上午第二節=>2),(下午第三節=>7)',
                             border: OutlineInputBorder(),
@@ -201,7 +267,14 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("堂數"),
+                Text(
+                    "堂數",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff739abe),
+                  ),
+                ),
                 SizedBox(width: 1,),
               ],
             ),
@@ -220,6 +293,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                           _selected_class_duration = value!;
                         });
                       },
+                      activeColor: Color(0xff739abe),
                     ),
                     Text(
                       '$class_duration',
@@ -229,10 +303,21 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                 );
               }),
             ),
-            ElevatedButton(
-              onPressed: _handleSubmit, // 使用函數來處理按鈕點擊事件
-              child: Text("繳交"),
-            ),
+            SizedBox(height: 10,),
+            Container(
+              height: 50,
+              child:ElevatedButton(
+                onPressed: _handleSubmit,
+                child: Text(
+                  "繳交",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff739abe),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       )

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
+import 'package:interviewer/firebase_store/fire_store_for_loading_personal_data.dart';
 import 'package:interviewer/question.dart';
 import 'package:interviewer/links.dart';
 
 import '../event_notify.dart';
 import '../food_for_not_waste.dart';
-import '../love_to_rain.dart'; // Ensure this import is included if using Get for navigation
+import '../love_to_rain.dart';
+
+List<bool> pinned = [false, false, false, false, false];
 
 class the_total_page_2 extends StatefulWidget {
   @override
@@ -15,8 +18,20 @@ class the_total_page_2 extends StatefulWidget {
 
 class _the_total_page_2 extends State<the_total_page_2> {
   List<int> containerOrder = [0, 1, 2, 3, 4];
-  List<bool> pinned = [false, false, false, false, false];
+  bool isLoading = true;
 
+  Future<void> loadUserData() async {
+    await loadUserFavoriteService();
+    setState(() {
+      isLoading = false;
+      _swapContainers();
+    });
+  }
+
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
   void _swapContainers() {
     setState(() {
       List<int> tmp = List.filled(containerOrder.length, 0);
@@ -113,6 +128,7 @@ class _the_total_page_2 extends State<the_total_page_2> {
                 onPressed: () {
                   setState(() {
                     pinned[id] = !pinned[id];
+                    updateUserFavoriteService();
                     _swapContainers();
                   });
                 },
@@ -136,6 +152,10 @@ class _the_total_page_2 extends State<the_total_page_2> {
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

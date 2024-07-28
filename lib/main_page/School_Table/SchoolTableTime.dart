@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import '../../firebase_store/fire_store_for_loading_personal_data.dart';
 import 'SchoolTableTimeAddTasks.dart';
+import 'SchoolTableTimeDeleteTasks.dart';
+
+//["課程",1, 9, 12, "WEEKLY", 1, "MO", "多媒體技術", "資B104"], //tag,semester,start_time_hours,end_time_hours,frequency,以(日/周)當作循環,byDays,class_name,class_location
+//["通識",1, 14, 17, "WEEKLY", 1, "TU", "線性代數", "電104"],
+//["課程",1, 9, 12, "WEEKLY", 1, "WE", "進階資料結構", "資B104"],
+List<List<dynamic>> personal_schedule_info = [];
 
 class Schooltabletime extends StatefulWidget {
   @override
@@ -10,16 +17,24 @@ class Schooltabletime extends StatefulWidget {
 }
 
 class _SchooltabletimeState extends State<Schooltabletime> {
-  List<List<dynamic>> personal_schedule_info = [
-    ["課程",1, 9, 12, "WEEKLY", 1, "MO", "多媒體技術", "資B104"],
-    ["通識",1, 14, 17, "WEEKLY", 1, "TU", "線性代數", "電104"],
-    ["課程",1, 9, 12, "WEEKLY", 1, "WE", "進階資料結構", "資B104"],
-  ];
+  bool isLoading = true;
+
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+  Future<void> loadUserData() async {
+    await loadUserPersonalSchedule();
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   void _updatePersonalScheduleInfo(List<dynamic> newTasks) {
     setState(() {
       personal_schedule_info.add(newTasks);
     });
+    updateUserPersonalSchedule();
   }
 
   List<Appointment> getAppointmentsFromScheduleInfo() {
@@ -82,6 +97,7 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                   timeSlotViewSettings: TimeSlotViewSettings(
                     startHour: 8,
                     endHour: 23,
+                    timeIntervalHeight: 60,
                   ),
                   dataSource: ScheduleDataSource(getAppointmentsFromScheduleInfo()),
                 ),
@@ -117,6 +133,28 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                   backgroundColor: Color(0xff95b0ce), // 按鈕背景顏色
                 ),
               )
+          ),
+          Positioned(
+              top: 6.0,
+              right: 120.0,
+              child: SizedBox(
+                width: 100.0, // 設置寬度
+                height: 40.0, // 設置高度
+                child: FloatingActionButton(
+                  backgroundColor: Color(0xff95b0ce),
+                  onPressed: () {
+                    Get.to(Schooltabletimedeletetasks());
+                  },
+                  child: Text(
+                    "DELETE",
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white
+                    ),
+                  ), // 設置圖標大小
+                ),
+              ),
           ),
         ],
       ),

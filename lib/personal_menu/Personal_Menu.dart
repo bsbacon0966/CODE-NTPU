@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:interviewer/event_notify.dart';
 import 'package:interviewer/login/login.dart';
-import 'package:interviewer/main_page_and_menu/main.dart';
+import 'package:interviewer/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import 'package:interviewer/main_page/main_first.dart';
@@ -21,6 +21,7 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
+
   Widget menu_list(String name, IconData icon, VoidCallback onTapCallback) {
     return GestureDetector(
       onTap: onTapCallback,
@@ -107,7 +108,7 @@ class _MenuPageState extends State<MenuPage> {
                   Get.to(() => event_notify());
                 }),
                 menu_list("返回", Icons.home, () {
-                  Get.back(result: () => TheBigTotalPage());
+                  Get.back(result: () => the_total_page());
                 }),
               ],
             ),
