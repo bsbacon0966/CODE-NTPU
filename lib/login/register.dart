@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:interviewer/main_page/main_first.dart';
 import 'package:interviewer/login/login.dart';
 
+import '../firebase_store/Create_User_Document_When_Register_Success.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -20,17 +22,15 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController schoolIDController = TextEditingController();
   final TextEditingController passwordconfirmationController = TextEditingController();
 
-  Future<void> createUserDocument(UserCredential? userCredential , String schoolID)async {
-    await FirebaseFirestore.instance
-        .collection("Users")
-        .doc(userCredential?.user!.email)
-        .set({
-          "email":userCredential?.user!.email,
-          "schoolID":schoolID,
-          "favorite_hyperlink":[true, true, true, true, false, false, false, false, false, false],
-          "favorite_service":[false, false, false, false, false],
-          "personal_schedule":[],
-        });
+  Widget TextField(String info,TextEditingController controller_info,bool isobscure){ // 輸入和統一規格
+    return TextFormField(
+      controller: controller_info,
+      decoration: InputDecoration(
+        hintText: info,
+        border: OutlineInputBorder(),
+      ),
+      obscureText: isobscure
+    );
   }
 
   Future<void> registerForUser() async {
@@ -40,6 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: CircularProgressIndicator(),
       ),
     );
+
     if (schoolIDController.text.isNotEmpty &&usernameController.text.isNotEmpty && passwordController.text.isNotEmpty && passwordconfirmationController.text.isNotEmpty) {
       if (passwordController.text != passwordconfirmationController.text) {
         showDialog(
@@ -62,7 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
             email: usernameController.text,
             password: passwordController.text,
           );
-          createUserDocument(userCredential,schoolIDController.text);
+          createUserDocument(userCredential,schoolIDController.text); // go to "Create_User_Document_When_Register_Success"
           Navigator.pop(context);
           showDialog(
             context: context,
@@ -124,39 +125,13 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFormField(
-              controller: schoolIDController,
-              decoration: InputDecoration(
-                hintText: '學號(school ID)',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            TextField("學號(school ID)",schoolIDController,false),
             SizedBox(height: 16),
-            TextFormField(
-              controller: usernameController,
-              decoration: InputDecoration(
-                hintText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            TextField("Email",usernameController,false),
             SizedBox(height: 16),
-            TextFormField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                hintText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
-            ),
+            TextField("Password",passwordController,true),
             SizedBox(height: 16),
-            TextFormField(
-              controller: passwordconfirmationController,
-              decoration: InputDecoration(
-                hintText: 'Password Confirmation',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
-            ),
+            TextField("Password Confirmation",passwordconfirmationController,true),
             SizedBox(height: 16),
             Container(
               width: MediaQuery.of(context).size.width * 0.90,

@@ -32,7 +32,6 @@ Future<void> updateUserFavoriteService() async {
     });
   }
 }
-//["課程",1,9,0,3, "WEEKLY", 1, "MO", "多媒體技術", "資B104",2],
 Future<void> updateUserPersonalSchedule() async { //將dynamic的資料型態轉成map並給每個元素分別上標籤
   if (currentUser != null) {
     List<Map<String, dynamic>> flattenedSchedule = personal_schedule_info.map((task) {

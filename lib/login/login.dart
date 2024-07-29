@@ -17,6 +17,17 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Widget TextField(String info,TextEditingController controller_info,bool isobscure){ // 輸入和統一規格
+    return TextFormField(
+        controller: controller_info,
+        decoration: InputDecoration(
+          hintText: info,
+          border: OutlineInputBorder(),
+        ),
+        obscureText: isobscure
+    );
+  }
+
   Future<void> loginUser() async {
     showDialog(
       context: context,
@@ -74,22 +85,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             SizedBox(height: 24),
-            TextFormField(
-              controller: emailController,
-              decoration: InputDecoration(
-                hintText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            TextField("Email",emailController,false),
             SizedBox(height: 16),
-            TextFormField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                hintText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
-            ),
+            TextField("Password",passwordController,true),
             SizedBox(height: 16),
             Container(
               width: MediaQuery.of(context).size.width * 0.90,
