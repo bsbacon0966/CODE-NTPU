@@ -10,21 +10,25 @@ class Schooltabletimeaddtasks extends StatefulWidget {
 }
 
 class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
+
   int _selectedDay = 0;
   int _selectedType = 0;
   int _selected_class_duration = 1;
-  final TextEditingController _courseStartController = TextEditingController();
+  int _selected_class_type = 0;
+  int _selected_class_start_morning = 0;
+  int _selected_class_start_afternoon = 0;
+
   final TextEditingController _courseLocationController = TextEditingController();
   final TextEditingController _courseNameController = TextEditingController();
 
   void _handleSubmit() {
-    String courseStart = _courseStartController.text;
+
     String courseLocation = _courseLocationController.text;
     String courseName = _courseNameController.text;
 
     List<dynamic> submit_tasks = [];
 
-    // tag
+    // "type"
     if (_selectedType == 0) {
       submit_tasks.add("課程");
     } else if (_selectedType == 1) {
@@ -34,16 +38,29 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
     // semester
     submit_tasks.add(1);
 
-    // start_time & duration
-    int courseStartInt = int.tryParse(courseStart) ?? 0;
-    if (courseStartInt <= 4) {
-      submit_tasks.add(courseStartInt + 7);
-      submit_tasks.add(0);
-    } else {
-      submit_tasks.add(courseStartInt + 8);
-      submit_tasks.add(0);
+    // start_hour
+    int courseStartInt = 0;
+    if(_selected_class_type==0){
+      courseStartInt+=1;
+      courseStartInt+=_selected_class_start_morning;
+      submit_tasks.add(courseStartInt+7);
     }
+    else if(_selected_class_type==1){
+      courseStartInt+=5;
+      courseStartInt+=_selected_class_start_afternoon;
+      submit_tasks.add(courseStartInt+8);
+    }
+    else{
+      courseStartInt+=10;
+      submit_tasks.add(courseStartInt);
+    }
+
+    //"start_minute"
+    submit_tasks.add(0);
+
+    //"duration_hours"
     submit_tasks.add(_selected_class_duration);
+
 
     submit_tasks.add("WEEKLY"); // frequency
     submit_tasks.add(1); // frequency interval
@@ -66,6 +83,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
   }
 
   List<String> type = ["正課", "通識"];
+  List<String> class_type = ["上午", "下午" , "晚上"];
 
   @override
   Widget build(BuildContext context) {
@@ -235,7 +253,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                    "課程開始在第幾堂",
+                    "課程開始在",
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
@@ -245,41 +263,127 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                 SizedBox(width: 1,),
               ],
             ),
-            Container(
-              padding: EdgeInsets.all(5.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: List.generate(class_type.length, (index) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Radio<int>(
+                      value: index,
+                      groupValue: _selected_class_type,
+                      onChanged: (int? value) {
+                        setState(() {
+                          _selected_class_type = value!;
+                        });
+                      },
+                      activeColor: Color(0xff739abe),
+                    ),
+                    Text(
+                      class_type[index],
+                      style: TextStyle(fontSize: 22),
+                    ),
+                  ],
+                );
+              }),
+            ),
+            SizedBox(height: 10,),
+            Visibility(
+              visible: _selected_class_type==2?false:true,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "在第幾堂開始",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff739abe),
+                      ),
+                    ),
+                    SizedBox(width: 1,),
+                  ],
+                ),
+            ),
+            Visibility(
+              visible: _selected_class_type==0?true:false,
               child: Row(
-                children: [
-                  Expanded(
-                      child: Opacity(
-                        opacity: 0.7,
-                        child: TextFormField(
-                          controller: _courseStartController,
-                          decoration: InputDecoration(
-                            hintText: '(上午第二節=>2),(下午第三節=>7),(晚上=>10)',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      )
-                  ),
-                ],
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: List.generate(4, (index) {
+                  int class_start = index;
+                  int print_class_start = class_start+1;
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Radio<int>(
+                        value: class_start,
+                        groupValue: _selected_class_start_morning,
+                        onChanged: (int? value) {
+                          setState(() {
+                            _selected_class_start_morning = value!;
+                          });
+                        },
+                        activeColor: Color(0xff739abe),
+                      ),
+                      Text(
+                        '$print_class_start',
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
+            Visibility(
+              visible: _selected_class_type==1?true:false,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: List.generate(5, (index) {
+                  int class_start = index;
+                  int print_class_start = class_start+1;
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Radio<int>(
+                        value: class_start,
+                        groupValue: _selected_class_start_afternoon,
+                        onChanged: (int? value) {
+                          setState(() {
+                            _selected_class_start_afternoon = value!;
+                          });
+                        },
+                        activeColor: Color(0xff739abe),
+                      ),
+                      Text(
+                        '$print_class_start',
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    ],
+                  );
+                }),
               ),
             ),
             SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                    "堂數",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff739abe),
-                  ),
+            Visibility(
+                visible: _selected_class_type==2?false:true,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "堂數",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff739abe),
+                      ),
+                    ),
+                    SizedBox(width: 1,),
+                  ],
                 ),
-                SizedBox(width: 1,),
-              ],
             ),
-            Row(
+            Visibility(
+              visible: _selected_class_type==2?false:true,
+              child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(3, (index) {
                 int class_duration = index + 1;
@@ -303,6 +407,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                   ],
                 );
               }),
+            ),
             ),
             SizedBox(height: 10,),
             Container(
