@@ -18,6 +18,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController schoolIDController = TextEditingController();
+  final TextEditingController passwordconfirmationController = TextEditingController();
 
   Future<void> createUserDocument(UserCredential? userCredential , String schoolID)async {
     await FirebaseFirestore.instance
@@ -39,37 +40,13 @@ class _RegisterPageState extends State<RegisterPage> {
         child: CircularProgressIndicator(),
       ),
     );
-    if (schoolIDController.text.isNotEmpty &&usernameController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      try {
-        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: usernameController.text,
-          password: passwordController.text,
-        );
-        createUserDocument(userCredential,schoolIDController.text);
-        Navigator.pop(context);
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Success'),
-            content: Text('Account created successfully'),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Get.to(() => LoginPage(), transition: Transition.rightToLeft);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-      } on FirebaseAuthException catch (e) {
-        Navigator.pop(context);
+    if (schoolIDController.text.isNotEmpty &&usernameController.text.isNotEmpty && passwordController.text.isNotEmpty && passwordconfirmationController.text.isNotEmpty) {
+      if (passwordController.text != passwordconfirmationController.text) {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Error'),
-            content: Text(e.message ?? 'An unknown error occurred'),
+            content: Text('Passwords do not match'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -79,7 +56,49 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         );
       }
-    } else {
+      else{
+        try {
+          UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: usernameController.text,
+            password: passwordController.text,
+          );
+          createUserDocument(userCredential,schoolIDController.text);
+          Navigator.pop(context);
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Success'),
+              content: Text('Account created successfully'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Get.to(() => LoginPage(), transition: Transition.rightToLeft);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        } on FirebaseAuthException catch (e) {
+          Navigator.pop(context);
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Error'),
+              content: Text(e.message ?? 'An unknown error occurred'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    }
+    else {
       Navigator.pop(context);
       showDialog(
         context: context,
@@ -125,6 +144,15 @@ class _RegisterPageState extends State<RegisterPage> {
               controller: passwordController,
               decoration: InputDecoration(
                 hintText: 'Password',
+                border: OutlineInputBorder(),
+              ),
+              obscureText: true,
+            ),
+            SizedBox(height: 16),
+            TextFormField(
+              controller: passwordconfirmationController,
+              decoration: InputDecoration(
+                hintText: 'Password Confirmation',
                 border: OutlineInputBorder(),
               ),
               obscureText: true,

@@ -82,6 +82,22 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
     Navigator.pop(context);
   }
 
+  Widget TextShow(String info){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          info,
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: Color(0xff739abe),
+          ),
+        ),
+        SizedBox(width: 1,),
+      ],
+    );
+  }
   List<String> type = ["正課", "通識"];
   List<String> class_type = ["上午", "下午" , "晚上"];
 
@@ -101,20 +117,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
         child: ListView(
           children: [
             SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                    "正課/通識",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff739abe),
-                  ),
-                ),
-                SizedBox(width: 1,),
-              ],
-            ),
+            TextShow("正課/通識"),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(type.length, (index) {
@@ -140,20 +143,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
               }),
             ),
             SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                    "課程在星期幾",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff739abe),
-                  ),
-                ),
-                SizedBox(width: 1,),
-              ],
-            ),
+            TextShow("課程在星期幾"),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(5, (index) {
@@ -181,20 +171,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
               }),
             ),
             SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                    "輸入課程名稱",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff739abe),
-                  ),
-                ),
-                SizedBox(width: 1,),
-              ],
-            ),
+            TextShow("輸入課程名稱"),
             Container(
               padding: EdgeInsets.all(5.0),
               child: Row(
@@ -215,20 +192,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
               ),
             ),
             SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                    "輸入課程地點",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff739abe),
-                  ),
-                ),
-                SizedBox(width: 1,),
-              ],
-            ),
+            TextShow("輸入課程地點"),
             Container(
               padding: EdgeInsets.all(5.0),
               child: Row(
@@ -249,20 +213,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
               ),
             ),
             SizedBox(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                    "課程開始在",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff739abe),
-                  ),
-                ),
-                SizedBox(width: 1,),
-              ],
-            ),
+            TextShow("課程開始在"),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(class_type.length, (index) {
@@ -290,20 +241,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
             SizedBox(height: 10,),
             Visibility(
               visible: _selected_class_type==2?false:true,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "在第幾堂開始",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff739abe),
-                      ),
-                    ),
-                    SizedBox(width: 1,),
-                  ],
-                ),
+                child: TextShow("在第幾堂開始"),
             ),
             Visibility(
               visible: _selected_class_type==0?true:false,
@@ -366,20 +304,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
             SizedBox(height: 10,),
             Visibility(
                 visible: _selected_class_type==2?false:true,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "堂數",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff739abe),
-                      ),
-                    ),
-                    SizedBox(width: 1,),
-                  ],
-                ),
+                child: TextShow("堂數"),
             ),
             Visibility(
               visible: _selected_class_type==2?false:true,

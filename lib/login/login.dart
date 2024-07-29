@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:interviewer/login/register.dart';
 import 'package:interviewer/main_page/main_first.dart';
-
 import '../main_page_and_menu/main_page_and_menu_initial.dart';
 
 class LoginPage extends StatefulWidget {

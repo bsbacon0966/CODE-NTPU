@@ -99,7 +99,7 @@ class _SchooltabletimedeletetasksState extends State<Schooltabletimedeletetasks>
                             SizedBox(width: 20),
                             Container(
                               child: Text(
-                                "${task[10]} - ${task[4] + task[10] - 1} 堂",
+                                task[10]==10 ? "晚上":"${task[10]} - ${task[4] + task[10] - 1} 堂",
                                 style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
@@ -155,12 +155,50 @@ class _SchooltabletimedeletetasksState extends State<Schooltabletimedeletetasks>
       ),
       body: Column(
         children: [
-          ElevatedButton(
-            onPressed: () async {
-              await updateUserPersonalScheduleDelete();
-              Get.to(TheBigTotalPage(selectedIndex: 2));
-            },
-            child: Text("確定刪除結果"),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.70,
+              height: MediaQuery.of(context).size.height * 0.06,
+              child: ElevatedButton(
+                onPressed: () async {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Warning'),
+                      content: Text('刪除的資訊將永久刪除，是否確定刪除?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('取消'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await updateUserPersonalScheduleDelete();
+                            Get.to(TheBigTotalPage(selectedIndex: 2));
+                          },
+                          child: Text('確認'),
+                        )
+                      ],
+                    ),
+                  );
+                  /*await updateUserPersonalScheduleDelete();
+                  Get.to(TheBigTotalPage(selectedIndex: 2));*/
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: Text(
+                  "確定刪除結果",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 23,
+                    fontWeight: FontWeight.w600,
+
+                  ),
+                ),
+              ),
+            ),
           ),
           Expanded(
             child: ListView.builder(
