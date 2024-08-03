@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +13,9 @@ import 'package:interviewer/main_page/main_first.dart';
 import '../main_page_and_menu/main_page_and_menu_initial.dart';
 
 final Uri _list = Uri.parse('https://docs.google.com/forms/d/e/1FAIpQLScZrmPSlm5YvaDXWtbH82SD0hcWxPIzlq31NtzRLqwI-zbyYQ/viewform?usp=sf_link');
+final Uri _about_me = Uri.parse('https://www.linkedin.com/in/%E5%AD%90%E5%82%91-%E9%99%B3-b93a64287/');
 
 String schoolID_on_menu = "410085000";
-
 
 class MenuPage extends StatefulWidget {
   @override
@@ -38,7 +40,7 @@ class _MenuPageState extends State<MenuPage> {
             Text(
               name,
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 27,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
               ),
@@ -115,7 +117,7 @@ class _MenuPageState extends State<MenuPage> {
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.15),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.10,
+            height: MediaQuery.of(context).size.height * 0.07,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -126,7 +128,18 @@ class _MenuPageState extends State<MenuPage> {
             ),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.10,
+            height: MediaQuery.of(context).size.height * 0.07,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                menu_list("關於開發者", Icons.create, () {
+                  _launchUrl(_about_me);
+                }),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.07,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -135,9 +148,10 @@ class _MenuPageState extends State<MenuPage> {
                     await FirebaseFirestore.instance.terminate();
                     await FirebaseFirestore.instance.clearPersistence();
                     await FirebaseAuth.instance.signOut();
-                    Get.off(() => LoginPage());
+                    Future.delayed(Duration(seconds: 1), () {
+                      exit(0);
+                    });
                   } catch (e) {
-                    // 处理登出错误
                     print('Logout error: $e');
                   }
                 }),

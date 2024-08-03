@@ -87,11 +87,12 @@ class _SchooltabletimeState extends State<Schooltabletime> {
               SizedBox(height: 10,),
               Expanded(
                 child: SfCalendar(
+                  initialDisplayDate: DateTime(2024, 9, 9), //just for testing , it will not be application when release it
                   headerStyle: CalendarHeaderStyle(
                     textStyle: TextStyle(
-                      color: Color(0xff95b0ce), // Set the desired color
-                      fontSize: 22, // Set the desired font size
-                      fontWeight: FontWeight.bold, // Set the desired font weight
+                      color: Color(0xff95b0ce),
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   view: CalendarView.workWeek,
@@ -115,7 +116,7 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                 height: 40.0, // 設置高度
                 child: FloatingActionButton(
                   onPressed: () {
-                    final newTasks = Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Schooltabletimeaddtasks(
@@ -131,8 +132,8 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                         fontWeight: FontWeight.w600,
                         color: Colors.white
                     ),
-                  ), // 設置圖標大小
-                  backgroundColor: Color(0xff95b0ce), // 按鈕背景顏色
+                  ),
+                  backgroundColor: Color(0xff95b0ce),
                 ),
               )
           ),
@@ -140,8 +141,8 @@ class _SchooltabletimeState extends State<Schooltabletime> {
               top: 6.0,
               right: 120.0,
               child: SizedBox(
-                width: 80.0, // 設置寬度
-                height: 40.0, // 設置高度
+                width: 80.0,
+                height: 40.0,
                 child: FloatingActionButton(
                   backgroundColor: Color(0xff95b0ce),
                   onPressed: () {
