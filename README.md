@@ -1,6 +1,6 @@
 # CODE_NTPU
 
-A new Flutter project.
+![Logo-3- remix](https://github.com/user-attachments/assets/b3db7c55-9f4c-4396-bae5-74995822d097)
 
 # 版本更新狀況
 ## 現有功能(ver 4.3)
