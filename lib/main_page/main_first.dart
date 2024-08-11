@@ -26,6 +26,8 @@ import 'package:interviewer/firebase_store/fire_store.dart';
 import 'package:interviewer/main_page/main_second.dart';
 import 'package:interviewer/main_page/School_Table/SchoolTableTime.dart';
 
+import '../color_decide.dart';
+
 final Uri _lms = Uri.parse('https://lms3.ntpu.edu.tw/login/index.php');
 final Uri _SIS = Uri.parse('https://cof.ntpu.edu.tw/student_new.htm');
 final Uri _leave = Uri.parse('https://cof.ntpu.edu.tw/pls/acad2/leave_sys.home');
@@ -360,7 +362,7 @@ class _the_total_page extends State<the_total_page> {
             borderType: BorderType.RRect,
             radius: Radius.circular(12),
             padding: EdgeInsets.all(3),
-            color: Color(0xff95b0ce),
+            color: Color(color_decide[user_color_decide][2]),
             child: Opacity(
               opacity: 0.6,
               child:SizedBox(
@@ -368,7 +370,7 @@ class _the_total_page extends State<the_total_page> {
                 child: Container(
                   height: MediaQuery.of(context).size.width * 0.26,
                   decoration: BoxDecoration(
-                    color: Color(0xffb9cde3),
+                    color: Color(color_decide[user_color_decide][1]),
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                   child: Container(
@@ -378,7 +380,7 @@ class _the_total_page extends State<the_total_page> {
                     child: Icon(
                       Icons.add,
                       size: 40,
-                      color:Color(0xff95b0ce),
+                      color:Color(color_decide[user_color_decide][3]),
                     ),
                   ),
                 ),

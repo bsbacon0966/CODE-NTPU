@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:interviewer/color_decide.dart';
 import 'package:interviewer/question.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart'; // 確保導入 scroll_snap_list 包
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
@@ -123,7 +124,7 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
       child: Container(
           height: MediaQuery.of(context).size.height * 0.11,
           decoration: BoxDecoration(
-            color: Color(0xffb3c7e5),
+            color: Color(color_decide[user_color_decide][1]),
             borderRadius: BorderRadius.circular(15.0),
             boxShadow: [
               BoxShadow(
@@ -184,7 +185,7 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
           children: [
             Icon(
               Icons.chevron_left,
-              color: Color(0xff95b0ce),
+              color: Color(color_decide[user_color_decide][2]),
             ),
             Container(
               height: MediaQuery.of(context).size.width * 0.25,
@@ -202,7 +203,7 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
                           _month[index]! + "月",
                           style: TextStyle(
                             fontSize: isFocused ? 40 : 25,
-                            color: Color(0xff95b0ce),
+                            color: Color(color_decide[user_color_decide][2]),
                           ),
                         ),
                       ],
@@ -222,7 +223,7 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
             ),
             Icon(
                 Icons.chevron_right,
-                color:Color(0xff95b0ce)
+                color:Color(color_decide[user_color_decide][2])
             ),
           ],
         )
@@ -289,7 +290,7 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
                       style: TextStyle(
                         fontWeight:FontWeight.w600,
                         fontSize: 25,
-                          color:Color(0xff95b0ce),
+                          color:Color(color_decide[user_color_decide][2]),
                       ),
                     ),
                     Padding(
@@ -298,7 +299,7 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
                         width: 50,
                         child: Switch(
                           value: is_newborn,
-                          activeColor: Color(0xff95b0ce),
+                          activeColor: Color(color_decide[user_color_decide][2]),
                           onChanged: (bool value) {
                             setState(() {
                               is_newborn = value;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:interviewer/color_decide.dart';
 
 class Schooltabletimeaddtasks extends StatefulWidget {
   final Function(List<dynamic>) onSubmit;
@@ -91,7 +92,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w600,
-            color: Color(0xff739abe),
+            color: Color(color_decide[0][3]),
           ),
         ),
         SizedBox(width: 1,),
@@ -117,7 +118,14 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
         child: ListView(
           children: [
             SizedBox(height: 10,),
-            TextShow("正課/通識"),
+            Text(
+                "正課/通識",
+              style: TextStyle(
+                color:Color(color_decide[user_color_decide][3]),
+                fontWeight: FontWeight.w600,
+                fontSize: 25,
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(type.length, (index) {
@@ -132,7 +140,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                           _selectedType = value!;
                         });
                       },
-                      activeColor: Color(0xff739abe),
+                      activeColor: Color(color_decide[user_color_decide][3]),
                     ),
                     Text(
                       type[index],
@@ -143,7 +151,14 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
               }),
             ),
             SizedBox(height: 10,),
-            TextShow("課程在星期幾"),
+            Text(
+                "課程在星期幾",
+              style: TextStyle(
+                color:Color(color_decide[user_color_decide][3]),
+                fontWeight: FontWeight.w600,
+                fontSize: 25,
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(5, (index) {
@@ -160,7 +175,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                           _selectedDay = value!;
                         });
                       },
-                      activeColor: Color(0xff739abe),
+                      activeColor: Color(color_decide[user_color_decide][3]),
                     ),
                     Text(
                       '$print_day',
@@ -171,7 +186,14 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
               }),
             ),
             SizedBox(height: 10,),
-            TextShow("輸入課程名稱"),
+            Text(
+                "輸入課程名稱",
+              style: TextStyle(
+                color:Color(color_decide[user_color_decide][3]),
+                fontWeight: FontWeight.w600,
+                fontSize: 25,
+              ),
+            ),
             Container(
               padding: EdgeInsets.all(5.0),
               child: Row(
@@ -192,7 +214,14 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
               ),
             ),
             SizedBox(height: 10,),
-            TextShow("輸入課程地點"),
+            Text(
+                "輸入課程地點",
+              style: TextStyle(
+                color:Color(color_decide[user_color_decide][3]),
+                fontWeight: FontWeight.w600,
+                fontSize: 25,
+              ),
+            ),
             Container(
               padding: EdgeInsets.all(5.0),
               child: Row(
@@ -213,7 +242,14 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
               ),
             ),
             SizedBox(height: 10,),
-            TextShow("課程開始在"),
+            Text(
+                "課程開始在",
+              style: TextStyle(
+                color:Color(color_decide[user_color_decide][3]),
+                fontWeight: FontWeight.w600,
+                fontSize: 25,
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: List.generate(class_type.length, (index) {
@@ -228,7 +264,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                           _selected_class_type = value!;
                         });
                       },
-                      activeColor: Color(0xff739abe),
+                      activeColor: Color(color_decide[user_color_decide][3]),
                     ),
                     Text(
                       class_type[index],
@@ -241,7 +277,14 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
             SizedBox(height: 10,),
             Visibility(
               visible: _selected_class_type==2?false:true,
-                child: TextShow("在第幾堂開始"),
+                child: Text(
+                    "在第幾堂開始",
+                  style: TextStyle(
+                    color:Color(color_decide[user_color_decide][3]),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 25,
+                  ),
+                ),
             ),
             Visibility(
               visible: _selected_class_type==0?true:false,
@@ -261,7 +304,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                             _selected_class_start_morning = value!;
                           });
                         },
-                        activeColor: Color(0xff739abe),
+                        activeColor: Color(color_decide[user_color_decide][3]),
                       ),
                       Text(
                         '$print_class_start',
@@ -290,7 +333,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                             _selected_class_start_afternoon = value!;
                           });
                         },
-                        activeColor: Color(0xff739abe),
+                        activeColor: Color(color_decide[user_color_decide][3]),
                       ),
                       Text(
                         '$print_class_start',
@@ -304,7 +347,14 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
             SizedBox(height: 10,),
             Visibility(
                 visible: _selected_class_type==2?false:true,
-                child: TextShow("堂數"),
+                child: Text(
+                    "堂數",
+                  style: TextStyle(
+                    color:Color(color_decide[user_color_decide][3]),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 25,
+                  ),
+                ),
             ),
             Visibility(
               visible: _selected_class_type==2?false:true,
@@ -323,7 +373,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                           _selected_class_duration = value!;
                         });
                       },
-                      activeColor: Color(0xff739abe),
+                      activeColor: Color(color_decide[user_color_decide][3]),
                     ),
                     Text(
                       '$class_duration',
@@ -344,11 +394,12 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xff739abe),
+                    color: Color(color_decide[user_color_decide][3]),
                   ),
                 ),
               ),
-            )
+            ),
+            SizedBox(height: 15,),
           ],
         ),
       )

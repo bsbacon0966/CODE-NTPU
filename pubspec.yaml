@@ -54,6 +54,7 @@ dependencies:
   file_picker: ^8.0.6
   firebase_storage: ^12.1.2
   image_picker: ^1.1.2
+  status_alert: ^1.0.1
 
 
 dev_dependencies:

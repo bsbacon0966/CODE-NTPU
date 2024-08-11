@@ -5,6 +5,7 @@ import 'package:interviewer/main_page/main_first.dart';
 import 'package:interviewer/personal_menu/Personal_Menu.dart';
 import 'package:interviewer/main_page/main_second.dart';
 
+import '../color_decide.dart';
 import '../main_page/School_Table/SchoolTableTime.dart';
 final User? currentUser = FirebaseAuth.instance.currentUser;
 Future<DocumentSnapshot<Map<String,dynamic>>> getUserDetail() async{
@@ -85,6 +86,17 @@ Future<void> updateUserPersonalScheduleDelete() async { //將dynamic的資料型
   }
 }
 
+Future<void> updateUserColorDecide() async {
+  if (currentUser != null) {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(currentUser!.email)
+        .update({
+      "user_color_decide": user_color_decide,
+    });
+  }
+}
+
 Future<void> loadUserHyperlink() async {
   if (currentUser != null) {
     DocumentSnapshot<Map<String, dynamic>> doc = await getUserDetail();
@@ -160,7 +172,14 @@ Future<void> loadUserSchoolID() async {
     }
   }
 }
-
+Future<void> loadUserColorDecide() async {
+  if (currentUser != null) {
+    DocumentSnapshot<Map<String, dynamic>> doc = await getUserDetail();
+    if (doc.exists) {
+      user_color_decide = doc.data()?['user_color_decide'];
+    }
+  }
+}
 /*
 Future<void> updateUserHyperlink() async {
   if (currentUser != null) {

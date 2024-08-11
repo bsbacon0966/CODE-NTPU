@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import '../../color_decide.dart';
 import '../../firebase_store/fire_store_for_loading_personal_data.dart';
 import 'SchoolTableTimeAddTasks.dart';
 import 'SchoolTableTimeDeleteTasks.dart';
@@ -90,7 +91,7 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                   initialDisplayDate: DateTime(2024, 9, 9), //just for testing , it will not be application when release it
                   headerStyle: CalendarHeaderStyle(
                     textStyle: TextStyle(
-                      color: Color(0xff95b0ce),
+                      color: Color(color_decide[user_color_decide][2]),
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -133,7 +134,7 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                         color: Colors.white
                     ),
                   ),
-                  backgroundColor: Color(0xff95b0ce),
+                  backgroundColor: Color(color_decide[user_color_decide][2]),
                 ),
               )
           ),
@@ -144,7 +145,7 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                 width: 80.0,
                 height: 40.0,
                 child: FloatingActionButton(
-                  backgroundColor: Color(0xff95b0ce),
+                  backgroundColor: Color(color_decide[user_color_decide][2]),
                   onPressed: () {
                     Get.to(Schooltabletimedeletetasks());
                   },
@@ -222,7 +223,7 @@ List<Appointment> getAppointments(
           startTime: startTime,
           endTime: endTime,
           subject: "$class_info\n$class_location",
-          color: Color(0xff95b0ce),
+          color: Color(color_decide[user_color_decide][2]),
           recurrenceRule: 'FREQ=$frequency;INTERVAL=$interval;BYDAY=$byDays;UNTIL=${semester_endRange.toUtc().toIso8601String()}',
         ),
       );
@@ -267,7 +268,7 @@ List<Appointment> getAppointments(
           startTime: startTime,
           endTime: endTime,
           subject: "$class_info\n$class_location",
-          color: Color(0xffa1bade),
+          color: Color(color_decide[user_color_decide][1]),
           recurrenceRule: 'FREQ=$frequency;INTERVAL=$interval;BYDAY=$byDays;UNTIL=${semester_endRange.toUtc().toIso8601String()}',
         ),
       );

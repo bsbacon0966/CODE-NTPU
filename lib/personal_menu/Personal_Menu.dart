@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:interviewer/color_decide.dart';
 import 'package:interviewer/event_notify.dart';
 import 'package:interviewer/login/login.dart';
 import 'package:interviewer/main.dart';
@@ -54,7 +55,7 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff739abe),
+      backgroundColor: Color(color_decide[user_color_decide][3]),
       body: ListView(
         children: [
           SizedBox(

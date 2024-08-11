@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:interviewer/color_decide.dart';
 import 'package:interviewer/firebase_store/firebase_options.dart';
 import 'package:interviewer/main_page_and_menu/Auth.dart';
 import 'package:interviewer/login/login.dart';
@@ -22,9 +23,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(
           appBarTheme: AppBarTheme(
-            color: Color(0xff95b0ce),
+            color: Color(color_decide[user_color_decide][2]),
           ),
-          scaffoldBackgroundColor: Color(0xfff0f3fc),
+          scaffoldBackgroundColor: Color(color_decide[user_color_decide][0]),
       ),
       debugShowCheckedModeBanner: false,
       home: AuthJudge(),

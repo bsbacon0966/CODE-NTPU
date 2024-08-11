@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:interviewer/color_decide.dart';
 import 'package:interviewer/firebase_store/fire_store_for_loading_personal_data.dart';
 
 import '../../main_page_and_menu/main_page_and_menu_initial.dart';
@@ -48,7 +49,7 @@ class _SchooltabletimedeletetasksState extends State<Schooltabletimedeletetasks>
           duration: Duration(seconds: 1),
           height: MediaQuery.of(context).size.height * 0.15,
           decoration: BoxDecoration(
-            color: Color(0xff95b0ce),
+            color: Color(color_decide[user_color_decide][2]),
             borderRadius: BorderRadius.circular(15.0),
             boxShadow: [
               BoxShadow(
@@ -119,14 +120,14 @@ class _SchooltabletimedeletetasksState extends State<Schooltabletimedeletetasks>
                   _removeTask(index);
                 },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Color(0xff538cc5),
+                  foregroundColor: Color(color_decide[user_color_decide][2]),
                   backgroundColor: Colors.white,
                   minimumSize: Size(50, 50),
                   padding: EdgeInsets.zero,
                 ),
                 child: Icon(
                   Icons.delete,
-                  color: Color(0xff739abe),
+                  color: Color(color_decide[user_color_decide][3]),
                 ),
               ),
             ],
