@@ -128,12 +128,15 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
             borderRadius: BorderRadius.circular(15.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.black26,
+                color: Colors.black,
                 spreadRadius: 1,
-                blurRadius: 8,
-                offset: Offset(3, 3),
+                offset: Offset(4, 4),
               ),
             ],
+            border: Border.all(
+              color: Colors.black,
+              width: 2.0,
+            )
           ),
           child: Padding(
             padding: EdgeInsets.all(5.0),

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:interviewer/main_page/School_Table/SchoolTableTimeDeleteTasks.dart';
+import 'package:interviewer/main_page/School_Table/SchoolTableTimeAdjustTasks.dart';
 import 'package:interviewer/main_page/main_first.dart';
 import 'package:interviewer/personal_menu/Personal_Menu.dart';
 import 'package:interviewer/main_page/main_second.dart';

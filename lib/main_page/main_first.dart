@@ -77,7 +77,6 @@ class _the_total_page extends State<the_total_page> {
   final FirestoreServices FS = FirestoreServices();
   int currentPage = 0;
 
-
   //------初始化變數--------------------------------------------------------------------------------------------
   int _currentPage = 0;
   late Timer _timer;
@@ -107,95 +106,6 @@ class _the_total_page extends State<the_total_page> {
     super.dispose();
     _timer?.cancel();
   }
-
-  //------主要畫面1建構-----------------------------------------------------------------------
-  Widget _main_info() {
-    return Column(
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.width* 0.506,
-          width: MediaQuery.of(context).size.width* 0.9,
-          child: PageView(
-              controller: _pageController,
-              children: [
-                Container(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: Image.asset(
-                      "assets/Logo.gif",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Container(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0), // 设置圆角半径
-                    child: Image.asset(
-                      "assets/ntpu.png",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ]
-          ),
-        ),
-        SizedBox(height: 5),
-        SmoothPageIndicator(
-          controller: _pageController,
-          count: 2,
-          effect: ExpandingDotsEffect(),
-        ),
-        SizedBox(
-          height: 30,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Opacity(
-                opacity: 0.6,
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 3.0),
-                      child: Container(
-                        width: 28,
-                        child: Image.asset(
-                          "assets/link-building.png",
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 5.0),
-                    Text(
-                      "個人快速連結",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.92,
-          child: Column(
-              children: [
-                _build_hyper_link_list_in_main_page_with_three_in_one_row(
-                    _build_hyper_link_list_in_main_page()
-                ),
-              ]
-          ),
-        ),
-        SizedBox(height: 20,),
-      ],
-    );
-  }
-
-  //------主要畫面(到快速連結)建構------------------------------------------------------------------------------------------
-
   Widget _build_hyper_link_list_in_main_page_with_three_in_one_row(List<Widget> orderedContainers) {
     List<Widget> rows = [];
     List<Widget> row = [];
@@ -278,12 +188,15 @@ class _the_total_page extends State<the_total_page> {
                 borderRadius: BorderRadius.circular(15.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black26,
+                    color: Colors.black,
                     spreadRadius: 1,
-                    blurRadius: 3,
-                    offset: Offset(3, 3),
+                    offset: Offset(5, 5),
                   ),
                 ],
+                border: Border.all(
+                  color: Colors.black, // 黑色外框
+                  width: 2.0, // 外框宽度，可根据需要调整
+                ),
               ),
               child: Container(
                 margin: EdgeInsets.all(3.0),
@@ -293,6 +206,7 @@ class _the_total_page extends State<the_total_page> {
               ),
             ),
           ),
+          SizedBox(height: 4,),
           Text(
             info,
             style: TextStyle(
@@ -322,12 +236,15 @@ class _the_total_page extends State<the_total_page> {
                 borderRadius: BorderRadius.circular(15.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black26,
+                    color: Colors.black,
                     spreadRadius: 1,
-                    blurRadius: 3,
-                    offset: Offset(3, 3),
+                    offset: Offset(4, 4),
                   ),
                 ],
+                border: Border.all(
+                  color: Colors.black, // 黑色外框
+                  width: 2.0, // 外框宽度，可根据需要调整
+                ),
               ),
               child: Container(
                 margin: EdgeInsets.all(3.0),
@@ -337,6 +254,7 @@ class _the_total_page extends State<the_total_page> {
               ),
             ),
           ),
+          SizedBox(height: 4,),
           Text(
             info,
             style: TextStyle(
@@ -874,15 +792,6 @@ class _the_total_page extends State<the_total_page> {
 
   //-----個人快速連結專區------------------------------------------------------------------------------------
 
-  //------主要畫面合併-------------------------------------------------------------------
-  List<Widget> _build_main_page() {
-    List<Widget> orderedContainers = [];
-    orderedContainers.add(_main_info());
-    //orderedContainers.add(_build_main_service_page());
-    return orderedContainers;
-  }
-
-  //------主要畫面合併--------------------------------------------------------------------------------------
 
   //----整體建構(畫面與appbar等功能結合)------------------------------------------------------------------------------------------------
   @override
@@ -914,7 +823,91 @@ class _the_total_page extends State<the_total_page> {
             Expanded(
               child: ListView(
                 padding: EdgeInsets.all(8),
-                children: _build_main_page(),
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.width* 0.506,
+                    width: MediaQuery.of(context).size.width* 0.9,
+                    child: PageView(
+                        controller: _pageController,
+                        children: [
+                          Container(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.asset(
+                                "assets/Logo.gif",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.asset(
+                                "assets/ntpu.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ]
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:[
+                      SmoothPageIndicator(
+                        controller: _pageController,
+                        count: 2,
+                        effect: ExpandingDotsEffect(),
+                      ),
+                    ]
+                  ),
+                  SizedBox(
+                    height: 30,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Opacity(
+                          opacity: 0.6,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 3.0),
+                                child: Container(
+                                  width: 28,
+                                  child: Image.asset(
+                                    "assets/link-building.png",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 5.0),
+                              Text(
+                                "個人快速連結",
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.92,
+                    child: Column(
+                        children: [
+                          _build_hyper_link_list_in_main_page_with_three_in_one_row(
+                              _build_hyper_link_list_in_main_page()
+                          ),
+                        ]
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                ],
               ),
             ),
           ],

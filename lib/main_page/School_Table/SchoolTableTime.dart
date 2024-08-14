@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../color_decide.dart';
 import '../../firebase_store/fire_store_for_loading_personal_data.dart';
 import 'SchoolTableTimeAddTasks.dart';
-import 'SchoolTableTimeDeleteTasks.dart';
+import 'SchoolTableTimeAdjustTasks.dart';
 
 //["課程",1,9,0,3, "WEEKLY", 1, "MO", "多媒體技術", "資B104",2], //tag,semester,start_time_hours,start_time_minutes,duration_hours,frequency,以(日/周)當作循環,byDays,class_name,class_location
 //["通識",1,14,0,3, "WEEKLY", 1, "TU", "線性代數", "電104"],
@@ -29,13 +29,6 @@ class _SchooltabletimeState extends State<Schooltabletime> {
     setState(() {
       isLoading = false;
     });
-  }
-
-  void _updatePersonalScheduleInfo(List<dynamic> newTasks) {
-    setState(() {
-      personal_schedule_info.add(newTasks);
-    });
-    updateUserPersonalSchedule();
   }
 
   List<Appointment> getAppointmentsFromScheduleInfo() {
@@ -91,7 +84,7 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                   initialDisplayDate: DateTime(2024, 9, 9), //just for testing , it will not be application when release it
                   headerStyle: CalendarHeaderStyle(
                     textStyle: TextStyle(
-                      color: Color(color_decide[user_color_decide][2]),
+                      color: Color(color_decide[user_color_decide][3]),
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -104,6 +97,39 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                     timeIntervalHeight: 60,
                   ),
                   dataSource: ScheduleDataSource(getAppointmentsFromScheduleInfo()),
+                  appointmentBuilder: (BuildContext context, CalendarAppointmentDetails details) {
+                    final Appointment appointment = details.appointments.first;
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: appointment.color,
+                        borderRadius: BorderRadius.circular(15.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black,
+                            spreadRadius: 1,
+                            offset: Offset(1.5, 1.5),
+                          ),
+                        ],
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1.5,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            appointment.subject,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
               SizedBox(height: 15),
@@ -113,23 +139,16 @@ class _SchooltabletimeState extends State<Schooltabletime> {
               top: 6.0,
               right: 16.0,
               child: SizedBox(
-                width: 100.0, // 設置寬度
-                height: 40.0, // 設置高度
+                width: 100.0,
+                height: 40.0,
                 child: FloatingActionButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Schooltabletimeaddtasks(
-                          onSubmit: _updatePersonalScheduleInfo,
-                        ),
-                      ),
-                    );
+                    Get.to(Schooltabletimedeletetasks(),transition:Transition.rightToLeft);
                   },
                   child: Text(
-                    "ADD TASK",
+                    "Adjust",
                     style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: Colors.white
                     ),
@@ -137,28 +156,6 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                   backgroundColor: Color(color_decide[user_color_decide][2]),
                 ),
               )
-          ),
-          Positioned(
-              top: 6.0,
-              right: 120.0,
-              child: SizedBox(
-                width: 80.0,
-                height: 40.0,
-                child: FloatingActionButton(
-                  backgroundColor: Color(color_decide[user_color_decide][2]),
-                  onPressed: () {
-                    Get.to(Schooltabletimedeletetasks());
-                  },
-                  child: Text(
-                    "DELETE",
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white
-                    ),
-                  ), // 設置圖標大小
-                ),
-              ),
           ),
         ],
       ),
@@ -222,8 +219,8 @@ List<Appointment> getAppointments(
         Appointment(
           startTime: startTime,
           endTime: endTime,
-          subject: "$class_info\n$class_location",
-          color: Color(color_decide[user_color_decide][2]),
+          subject: "$class_info\n\n$class_location",
+          color: Color(color_decide[user_color_decide][3]),
           recurrenceRule: 'FREQ=$frequency;INTERVAL=$interval;BYDAY=$byDays;UNTIL=${semester_endRange.toUtc().toIso8601String()}',
         ),
       );
@@ -267,8 +264,8 @@ List<Appointment> getAppointments(
         Appointment(
           startTime: startTime,
           endTime: endTime,
-          subject: "$class_info\n$class_location",
-          color: Color(color_decide[user_color_decide][1]),
+          subject: "$class_info\n\n$class_location",
+          color: Color(color_decide[user_color_decide][2]),
           recurrenceRule: 'FREQ=$frequency;INTERVAL=$interval;BYDAY=$byDays;UNTIL=${semester_endRange.toUtc().toIso8601String()}',
         ),
       );

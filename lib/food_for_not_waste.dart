@@ -71,6 +71,7 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
     }
   }
+
   Future saveUrlToDatabase(String url) async {
     try {
       await FirebaseFirestore.instance.collection('your_collection').add({
@@ -83,6 +84,7 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save URL to database: $e')));
     }
   }
+
   @override
   void dispose() {
     _progressController?.close();
