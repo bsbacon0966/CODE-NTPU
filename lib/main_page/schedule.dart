@@ -114,7 +114,6 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
         else containers.add(_buildContainer(month_1[i][0], month_1[i][1]));
       }
     }
-    List<Widget> orderedContainers = [];
     return Column(children: containers);
   }
 
@@ -206,7 +205,7 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
                           _month[index]! + "月",
                           style: TextStyle(
                             fontSize: isFocused ? 40 : 25,
-                            color: Color(color_decide[user_color_decide][2]),
+                            color: Color(color_decide[user_color_decide][3]),
                           ),
                         ),
                       ],
@@ -293,7 +292,7 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
                       style: TextStyle(
                         fontWeight:FontWeight.w600,
                         fontSize: 25,
-                          color:Color(color_decide[user_color_decide][2]),
+                          color:Color(color_decide[user_color_decide][3]),
                       ),
                     ),
                     Padding(

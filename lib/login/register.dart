@@ -6,6 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:interviewer/main_page/main_first.dart';
 import 'package:interviewer/login/login.dart';
+import 'package:toasty_box/toast_enums.dart';
+import 'package:toasty_box/toast_service.dart';
 
 import '../firebase_store/Create_User_Document_When_Register_Success.dart';
 
@@ -40,21 +42,32 @@ class _RegisterPageState extends State<RegisterPage> {
         child: CircularProgressIndicator(),
       ),
     );
-
-    if (schoolIDController.text.isNotEmpty &&usernameController.text.isNotEmpty && passwordController.text.isNotEmpty && passwordconfirmationController.text.isNotEmpty) {
+    if(schoolIDController.text.isEmpty||schoolIDController.text.length!=9){
+      Navigator.pop(context);
+      ToastService.showErrorToast(
+        context,
+        length: ToastLength.medium,
+        expandedHeight: 100,
+        message: "請輸入正確學號",
+      );
+    }
+    else if(usernameController.text.isEmpty){
+      Navigator.pop(context);
+      ToastService.showErrorToast(
+        context,
+        length: ToastLength.medium,
+        expandedHeight: 100,
+        message: "請輸入你的Email",
+      );
+    }
+    else if (schoolIDController.text.isNotEmpty &&usernameController.text.isNotEmpty && passwordController.text.isNotEmpty && passwordconfirmationController.text.isNotEmpty) {
       if (passwordController.text != passwordconfirmationController.text) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text('Passwords do not match'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          ),
+        Navigator.pop(context);
+        ToastService.showErrorToast(
+          context,
+          length: ToastLength.medium,
+          expandedHeight: 100,
+          message: "密碼與確認密碼對不上",
         );
       }
       else{
@@ -65,21 +78,11 @@ class _RegisterPageState extends State<RegisterPage> {
           );
           createUserDocument(userCredential,schoolIDController.text); // go to "Create_User_Document_When_Register_Success"
           Navigator.pop(context);
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Success'),
-              content: Text('Account created successfully'),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Get.to(() => LoginPage(), transition: Transition.rightToLeft);
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            ),
+          ToastService.showSuccessToast(
+            context,
+            length: ToastLength.medium,
+            expandedHeight: 100,
+            message: "帳號創立成功",
           );
         } on FirebaseAuthException catch (e) {
           Navigator.pop(context);

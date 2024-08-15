@@ -90,12 +90,15 @@ class _the_total_page_2 extends State<the_total_page_2> {
             borderRadius: BorderRadius.circular(15.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.black26,
+                color: Colors.black,
                 spreadRadius: 1,
-                blurRadius: 8,
-                offset: Offset(3, 3),
+                offset: Offset(5, 5),
               ),
             ],
+            border: Border.all(
+              color: Colors.black, // 黑色外框
+              width: 2.0, // 外框宽度，可根据需要调整
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

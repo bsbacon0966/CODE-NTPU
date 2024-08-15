@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:interviewer/login/register.dart';
 import 'package:interviewer/main_page/main_first.dart';
+import 'package:toasty_box/toast_enums.dart';
+import 'package:toasty_box/toast_service.dart';
 import '../main_page_and_menu/main_page_and_menu_initial.dart';
 
 class LoginPage extends StatefulWidget {
@@ -35,28 +37,48 @@ class _LoginPageState extends State<LoginPage> {
         child: CircularProgressIndicator(),
       ),
     );
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+    if(emailController.text==""){
       Navigator.pop(context);
-      Get.to(() => TheBigTotalPage(), transition: Transition.rightToLeft);
-    } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Login Failed'),
-          content: Text(e.message ?? 'An unknown error occurred'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
+      ToastService.showErrorToast(
+        context,
+        length: ToastLength.medium,
+        expandedHeight: 100,
+        message: "Email不可為空",
       );
+    }
+    else if(passwordController.text==""){
+      Navigator.pop(context);
+      ToastService.showErrorToast(
+        context,
+        length: ToastLength.medium,
+        expandedHeight: 100,
+        message: "密碼不可為空",
+      );
+    }
+    else if(passwordController.text!=""&&emailController.text!=""){
+      try {
+        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        Navigator.pop(context);
+        Get.to(() => TheBigTotalPage(), transition: Transition.rightToLeft);
+      } on FirebaseAuthException catch (e) {
+        Navigator.pop(context);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Login Failed'),
+            content: Text(e.message ?? 'An unknown error occurred'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     }
   }
 
