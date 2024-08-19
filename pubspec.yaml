@@ -57,6 +57,7 @@ dependencies:
   status_alert: ^1.0.1
   toasty_box: ^1.0.4
   quickalert: ^1.1.0
+  intl: ^0.19.0
 
 
 dev_dependencies:

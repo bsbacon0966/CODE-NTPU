@@ -20,7 +20,7 @@ import 'package:interviewer/personal_menu/Personal_Menu.dart';
 import 'package:interviewer/links.dart';
 import 'package:interviewer/love_to_rain.dart';
 import 'package:interviewer/event_notify.dart';
-import 'package:interviewer/food_for_not_waste.dart';
+import 'package:interviewer/food_for_not_waste/food_for_not_waste.dart';
 import 'package:interviewer/question.dart';
 import 'package:interviewer/firebase_store/fire_store.dart';
 import 'package:interviewer/main_page/main_second.dart';

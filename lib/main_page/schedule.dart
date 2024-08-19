@@ -9,7 +9,7 @@ import 'package:scroll_snap_list/scroll_snap_list.dart'; // 確保導入 scroll_
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
 import '../event_notify.dart';
-import '../food_for_not_waste.dart';
+import '../food_for_not_waste/food_for_not_waste.dart';
 import '../links.dart';
 import '../love_to_rain.dart';
 
