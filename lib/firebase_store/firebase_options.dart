@@ -68,21 +68,21 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBHIpw5Inf7FLFX0_jH7-5j_xPSdHjbtqE',
-    appId: '1:736051025902:ios:aca49f204949000625e0ff',
-    messagingSenderId: '736051025902',
-    projectId: 'codexntpu',
-    storageBucket: 'codexntpu.appspot.com',
+    apiKey: 'AIzaSyAlgYZM3HALdCpKLosw9m2ekMA6Nl1SJ40',
+    appId: '1:980467432782:ios:7a99ca1e2549461450321f',
+    messagingSenderId: '980467432782',
+    projectId: 'codexntpu-31432',
+    storageBucket: 'codexntpu-31432.appspot.com',
     iosBundleId: 'com.example.interviewer',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCDzZ-2OmqXgEkdIoBSLUi75j8gJTTOqVE',
-    appId: '1:736051025902:web:a546b3d866e0add125e0ff',
-    messagingSenderId: '736051025902',
-    projectId: 'codexntpu',
-    authDomain: 'codexntpu.firebaseapp.com',
-    storageBucket: 'codexntpu.appspot.com',
-    measurementId: 'G-VYWJMNXLLM',
+    apiKey: 'AIzaSyAOIgeA7WVKWQK3F0KL3QAd-7xZCg2G4BQ',
+    appId: '1:980467432782:web:8f0500c337848aeb50321f',
+    messagingSenderId: '980467432782',
+    projectId: 'codexntpu-31432',
+    authDomain: 'codexntpu-31432.firebaseapp.com',
+    storageBucket: 'codexntpu-31432.appspot.com',
+    measurementId: 'G-XLXCK6TB9C',
   );
 }

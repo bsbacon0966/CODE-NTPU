@@ -121,7 +121,7 @@ class _ScheduleInMainState extends State<ScheduleInMain> {
     return Padding(
       padding: EdgeInsets.all(8.0),
       child: Container(
-          height: MediaQuery.of(context).size.height * 0.11,
+          height: MediaQuery.of(context).size.height * 0.13,
           decoration: BoxDecoration(
             color: Color(color_decide[user_color_decide][1]),
             borderRadius: BorderRadius.circular(15.0),

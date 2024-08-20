@@ -208,8 +208,8 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                         });
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4.0),
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                        margin: EdgeInsets.symmetric(horizontal: 2.0),
+                        padding: EdgeInsets.only(right: 8.0),
                         decoration: BoxDecoration(
                           color: isSelectedDay ? Color(color_decide[user_color_decide][1]) : Colors.grey[200],
                           borderRadius: BorderRadius.circular(8.0),
@@ -237,7 +237,7 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                             ),
                             Text(
                               '$print_day',
-                              style: TextStyle(fontSize: 22),
+                              style: TextStyle(fontSize: 20),
                             ),
                           ],
                         ),
@@ -300,8 +300,8 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                         });
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 4.0),
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                        margin: EdgeInsets.symmetric(horizontal: 2.0),
+                        padding: EdgeInsets.only(right: 8.0),
                         decoration: BoxDecoration(
                           color:isSelectedClassType? Color(color_decide[user_color_decide][1]) : Colors.grey[200],
                           borderRadius: BorderRadius.circular(8.0),
@@ -358,8 +358,8 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                           });
                         },
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 4.0),
-                          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                          margin: EdgeInsets.symmetric(horizontal: 2.0),
+                          padding: EdgeInsets.only(right: 8.0),
                           decoration: BoxDecoration(
                             color:isSelectedStartMorning? Color(color_decide[user_color_decide][1]) : Colors.grey[200],
                             borderRadius: BorderRadius.circular(8.0),
@@ -411,8 +411,8 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                           });
                         },
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 4.0),
-                          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                          margin: EdgeInsets.symmetric(horizontal: 2.0),
+                          padding: EdgeInsets.only(right: 6.0),
                           decoration: BoxDecoration(
                             color:isSelectedStartAfternoon? Color(color_decide[user_color_decide][1]) : Colors.grey[200],
                             borderRadius: BorderRadius.circular(8.0),
@@ -468,8 +468,8 @@ class _SchooltabletimeaddtasksState extends State<Schooltabletimeaddtasks> {
                           });
                         },
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 4.0),
-                          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                          margin: EdgeInsets.symmetric(horizontal: 2.0),
+                          padding: EdgeInsets.only(right: 6.0),
                           decoration: BoxDecoration(
                             color:isSelectedDuration? Color(color_decide[user_color_decide][1]) : Colors.grey[200],
                             borderRadius: BorderRadius.circular(8.0),
