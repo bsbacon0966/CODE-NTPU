@@ -293,7 +293,7 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
                     ),
                     Column(
                       children: [
-                        for (int i = 0; i < how_many_textform; i++)//動態調整widget數量
+                        for (int i = 0; i < how_many_textform; i++)
                           Padding(
                             padding: EdgeInsets.all(8.0),
                             child: _addNewTextFormField(i),

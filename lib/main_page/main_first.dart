@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,6 +65,7 @@ final Uri _LIB = Uri.parse('https://library.ntpu.edu.tw/masses/showMassesLogin;j
 final Uri _READ = Uri.parse('https://ireserve.lib.ntpu.edu.tw/sm/home_web.do?locale=zh_TW');
 
 List<bool> hyper_link_is_on = [true, true, true, true, false, false, false, false, false, false];
+List<String>  picture_set = [];
 
 class the_total_page extends StatefulWidget {
   @override
@@ -75,7 +77,6 @@ class _the_total_page extends State<the_total_page> {
   //------初始化變數--------------------------------------------------------------------------------------------
   int count = 0;
   final FirestoreServices FS = FirestoreServices();
-  int currentPage = 0;
 
   //------初始化變數--------------------------------------------------------------------------------------------
   int _currentPage = 0;
@@ -83,11 +84,21 @@ class _the_total_page extends State<the_total_page> {
   PageController _pageController = PageController(
     initialPage: 0,
   );
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    preloadImages();
+  }
+
+  void preloadImages() {
+    for (String uri in picture_set) {
+      precacheImage(NetworkImage(uri), context);
+    }
+  }
 
   void initState() {
     super.initState();
-    _timer = Timer.periodic(Duration(seconds: 5), (Timer timer) {
-      if (_currentPage < 1) {
+    _timer = Timer.periodic(Duration(seconds: 7), (Timer timer) {
+      if (_currentPage < picture_set.length-1) {
         _currentPage++;
       } else {
         _currentPage = 0;
@@ -830,24 +841,18 @@ class _the_total_page extends State<the_total_page> {
                     child: PageView(
                         controller: _pageController,
                         children: [
-                          Container(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: Image.asset(
-                                "assets/Logo.gif",
-                                fit: BoxFit.cover,
+                          for (String uri in picture_set) // Iterate through picture_set
+                            Container(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20.0),
+                                child: CachedNetworkImage(
+                                    imageUrl: uri,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20.0),
-                              child: Image.asset(
-                                "assets/ntpu.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
                         ]
                     ),
                   ),
@@ -857,7 +862,7 @@ class _the_total_page extends State<the_total_page> {
                     children:[
                       SmoothPageIndicator(
                         controller: _pageController,
-                        count: 2,
+                        count: picture_set.length,
                         effect: ExpandingDotsEffect(),
                       ),
                     ]
@@ -883,7 +888,7 @@ class _the_total_page extends State<the_total_page> {
                               ),
                               SizedBox(width: 5.0),
                               Text(
-                                "個人快速連結",
+                                "Quick links",
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,

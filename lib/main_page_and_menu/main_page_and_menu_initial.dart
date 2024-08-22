@@ -6,6 +6,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
 import '../color_decide.dart';
 import '../firebase_store/fire_store_for_loading_personal_data.dart';
+import '../firebase_store/fire_store_for_news.dart';
 import '../main_page/School_Table/SchoolTableTime.dart';
 import '../main_page/main_first.dart';
 import '../main_page/main_second.dart';
@@ -35,6 +36,7 @@ class _TheBigTotalPageState extends State<TheBigTotalPage> {
     await loadUserHyperlink();
     await loadUserSchoolID();
     await loadUserColorDecide();
+    await loadNews();
     setState(() {
       isLoading = false;
     });
