@@ -5,6 +5,7 @@ import 'package:interviewer/firebase_store/fire_store_for_loading_personal_data.
 import 'package:interviewer/question.dart';
 import 'package:interviewer/links.dart';
 
+import '../GPA/GPA_calculator.dart';
 import '../event_notify.dart';
 import '../food_for_not_waste/food_for_not_waste.dart';
 import '../food_for_not_waste/food_for_not_waste_main_page.dart';
@@ -18,7 +19,7 @@ class the_total_page_2 extends StatefulWidget {
 }
 
 class _the_total_page_2 extends State<the_total_page_2> {
-  List<int> containerOrder = [0, 1, 2, 3, 4];
+  List<int> containerOrder = [0, 1, 2, 3, 4, 5];
   bool isLoading = true;
 
   Future<void> loadUserData() async {
@@ -62,6 +63,7 @@ class _the_total_page_2 extends State<the_total_page_2> {
       _buildContainer(2, Colors.blue[100], '問卷調查集合處', 'assets/list.png', Question()),
       _buildContainer(3, Colors.red[100], 'Cherish blessing', 'assets/bibimbap.png',  FoodForNotWasteMainPage()),
       _buildContainer(4, Colors.purple[100], 'Event promotion', 'assets/event.png', event_notify()),
+      _buildContainer(5, Colors.purple[100], 'GPA calculator', 'assets/event.png', CsvUploader()),
     ];
 
     List<Widget> orderedContainers = [];
