@@ -81,7 +81,6 @@ class _SchooltabletimeState extends State<Schooltabletime> {
               SizedBox(height: 10,),
               Expanded(
                 child: SfCalendar(
-                  initialDisplayDate: DateTime(2024, 9, 9), //just for testing , it will not be application when release it
                   headerStyle: CalendarHeaderStyle(
                     textStyle: TextStyle(
                       color: Color(color_decide[user_color_decide][3]),

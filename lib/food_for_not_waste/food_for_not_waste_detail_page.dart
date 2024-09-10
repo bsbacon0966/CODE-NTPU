@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:input_quantity/input_quantity.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -143,33 +144,20 @@ class _DetailPageState extends State<DetailPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              IconButton(
-                                icon: Icon(Icons.exposure_neg_1),
-                                onPressed: () {
-                                  setState(() {
-                                    if (_quantities[index] > 0) {
-                                      _quantities[index]--;
-                                    }
-                                  });
+                              InputQty.int(
+                                maxVal:dataItem['quantity'] ,
+                                initVal: 0,
+                                minVal: 0,
+                                steps: 1,
+                                onQtyChanged: (val) {
+                                  _quantities[index] = val;
                                 },
-                              ),
-                              Text(
-                                '${_quantities[index]}',
-                                style: TextStyle(
-                                  color: Color(color_decide[user_color_decide][3]),
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w600,
+                                decoration: QtyDecorationProps(
+                                  isBordered: false,
+                                  borderShape: BorderShapeBtn.circle,
+                                  iconColor: Color(color_decide[user_color_decide][3]),
+                                  width: 12,
                                 ),
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.exposure_plus_1),
-                                onPressed: () {
-                                  setState(() {
-                                    if (_quantities[index] < dataItem['quantity']) {
-                                      _quantities[index]++;
-                                    }
-                                  });
-                                },
                               ),
                             ],
                           )

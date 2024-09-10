@@ -13,6 +13,7 @@ import 'package:interviewer/main_page/main_first.dart';
 
 import '../controller_folder/news_adjust.dart';
 import '../controller_folder/news_overall.dart';
+import '../controller_warning/warning_context.dart';
 import '../main_page_and_menu/main_page_and_menu_initial.dart';
 
 final Uri _list = Uri.parse('https://docs.google.com/forms/d/e/1FAIpQLScZrmPSlm5YvaDXWtbH82SD0hcWxPIzlq31NtzRLqwI-zbyYQ/viewform?usp=sf_link');
@@ -112,8 +113,11 @@ class _MenuPageState extends State<MenuPage> {
                 menu_list("個人設定", Icons.settings, () {
                   Get.to(() => event_notify());
                 }),
-                menu_list("開發者環境", Icons.home, () {
+                /*menu_list("開發者環境", Icons.home, () {
                   Get.to(() => NewsOverall());
+                }),*/    //先隱藏
+                menu_list("留言管理", Icons.home, () {
+                  Get.to(() => WarningContext());
                 }),
               ],
             ),

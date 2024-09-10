@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:input_quantity/input_quantity.dart';
 import 'package:status_alert/status_alert.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -47,43 +48,32 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
       child: Row(
         children: [
           Expanded(
-            child: Opacity(
-              opacity: 0.7,
-              child: TextFormField(
-                controller: _controllers[index],
-                decoration: InputDecoration(
-                  labelText: '食品資訊${index + 1}',
-                  hintText: "ex:雞腿便當",
-                  border: OutlineInputBorder(),
+              child: Opacity(
+                opacity: 0.7,
+                child: TextFormField(
+                  controller: _controllers[index],
+                  decoration: InputDecoration(
+                    labelText: '食品資訊${index + 1}',
+                    hintText: "ex:雞腿便當",
+                    border: OutlineInputBorder(),
+                  ),
                 ),
-              ),
-            )
+              )
           ),
-          IconButton(
-            icon: Icon(Icons.exposure_neg_1),
-            onPressed: () {
-              setState(() {
-                if (_quantities[index] > 0) {
-                  _quantities[index]--;
-                }
-              });
+          InputQty.int(
+            maxVal: 100,
+            initVal: 0,
+            minVal: 0,
+            steps: 1,
+            onQtyChanged: (val) {
+              _quantities[index] = val;
             },
-          ),
-          Text(
-              '${_quantities[index]}',
-              style: TextStyle(
-                color: Color(color_decide[user_color_decide][3]),
-                fontSize: 30,
-                fontWeight: FontWeight.w600,
-              ),
-          ),
-          IconButton(
-            icon: Icon(Icons.exposure_plus_1),
-            onPressed: () {
-              setState(() {
-                _quantities[index]++;
-              });
-            },
+            decoration: QtyDecorationProps(
+                isBordered: false,
+                borderShape: BorderShapeBtn.circle,
+                iconColor: Color(color_decide[user_color_decide][3]),
+                width: 12,
+            ),
           ),
         ],
       ),
@@ -245,9 +235,16 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
                 Icon(
                   Icons.add,
                   size: 40,
-                  color: Color(color_decide[user_color_decide][3]),
+                  color: Colors.white,
                 ),
-                TextShow("Tap here to add an image"),
+                Text(
+                  "Tap here to add an image",
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                      color:Colors.white
+                  ),
+                ),
               ],
             ),
           ),
@@ -304,20 +301,20 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Visibility(
-                            visible: how_many_textform>1?true:false,
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child:ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    how_many_textform--;
-                                    _controllers.removeLast();
-                                    _quantities.removeLast();
-                                  });
-                                },
-                                child: Icon(Icons.delete_rounded),
-                              ),
+                          visible: how_many_textform>1?true:false,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            child:ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  how_many_textform--;
+                                  _controllers.removeLast();
+                                  _quantities.removeLast();
+                                });
+                              },
+                              child: Icon(Icons.delete_rounded),
                             ),
+                          ),
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.4,

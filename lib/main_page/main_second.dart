@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:interviewer/firebase_store/fire_store_for_loading_personal_data.dart';
 import 'package:interviewer/question.dart';
 import 'package:interviewer/links.dart';
+import 'package:interviewer/talk_for_test/taik.dart';
 
 import '../GPA/GPA_calculator.dart';
 import '../event_notify.dart';
@@ -58,12 +59,12 @@ class _the_total_page_2 extends State<the_total_page_2> {
 
   Widget _build_main_service_page() {
     List<Widget> containers = [
-      _buildContainer(0, Colors.lightGreen[100], 'Courtesy umbrella', 'assets/test_back.png', love_to_rain()),
-      _buildContainer(1, Colors.yellow[200], 'Links in NTPU', 'assets/ux.png', ScheduleAndLinks()),
+      _buildContainer(0, Colors.lightGreen[100], '愛心傘租借/歸還', 'assets/test_back.png', love_to_rain()),
+      _buildContainer(1, Colors.yellow[200], '北大連結集中區', 'assets/ux.png', ScheduleAndLinks()),
       _buildContainer(2, Colors.blue[100], '問卷調查集合處', 'assets/list.png', Question()),
-      _buildContainer(3, Colors.red[100], 'Cherish blessing', 'assets/bibimbap.png',  FoodForNotWasteMainPage()),
-      _buildContainer(4, Colors.purple[100], 'Event promotion', 'assets/event.png', event_notify()),
-      _buildContainer(5, Colors.purple[100], 'GPA calculator', 'assets/event.png', CsvUploader()),
+      _buildContainer(3, Colors.red[100], '惜福專區', 'assets/bibimbap.png',  FoodForNotWasteMainPage()),
+      _buildContainer(4, Colors.purple[100], '活動宣傳', 'assets/event.png', event_notify()),
+      _buildContainer(5, Colors.purple[100], '測試者聊天室', 'assets/event.png', TalkToMe()), //測試服，之後是CSVloader
     ];
 
     List<Widget> orderedContainers = [];
