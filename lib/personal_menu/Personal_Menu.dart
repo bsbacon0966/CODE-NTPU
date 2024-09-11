@@ -7,6 +7,7 @@ import 'package:interviewer/color_decide.dart';
 import 'package:interviewer/event_notify.dart';
 import 'package:interviewer/login/login.dart';
 import 'package:interviewer/main.dart';
+import 'package:interviewer/personal_menu/personal_info_adjust.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import 'package:interviewer/main_page/main_first.dart';
@@ -111,7 +112,7 @@ class _MenuPageState extends State<MenuPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 menu_list("個人設定", Icons.settings, () {
-                  Get.to(() => event_notify());
+                  Get.to(() => PersonalInfoAdjust());
                 }),
                 /*menu_list("開發者環境", Icons.home, () {
                   Get.to(() => NewsOverall());

@@ -121,7 +121,7 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                           Text(
                             appointment.subject,
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 16,
                               color: Colors.white,
                             ),
                           ),

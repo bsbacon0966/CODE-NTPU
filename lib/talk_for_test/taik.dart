@@ -295,7 +295,7 @@ class _TalkToMeState extends State<TalkToMe> {
                       return Container(
                         margin: const EdgeInsets.all(8.0),
                         padding: const EdgeInsets.all(12.0),
-                        height: MediaQuery.of(context).size.height * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.15,
                         decoration: BoxDecoration(
                           color: item['isCreater']? Colors.limeAccent[100]:Colors.white,
                           borderRadius: BorderRadius.circular(15.0),

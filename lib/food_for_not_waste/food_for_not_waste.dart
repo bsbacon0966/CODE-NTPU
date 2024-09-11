@@ -69,10 +69,10 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
               _quantities[index] = val;
             },
             decoration: QtyDecorationProps(
-                isBordered: false,
-                borderShape: BorderShapeBtn.circle,
-                iconColor: Color(color_decide[user_color_decide][3]),
-                width: 12,
+              isBordered: false,
+              borderShape: BorderShapeBtn.circle,
+              iconColor: Color(color_decide[user_color_decide][3]),
+              width: 12,
             ),
           ),
         ],
@@ -235,14 +235,14 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
                 Icon(
                   Icons.add,
                   size: 40,
-                  color: Colors.white,
+                  color:user_color_decide==0?Colors.white:Color(color_decide[user_color_decide][3]),
                 ),
                 Text(
                   "Tap here to add an image",
                   style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                      color:Colors.white
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                    color:user_color_decide==0?Colors.white:Color(color_decide[user_color_decide][3]),
                   ),
                 ),
               ],
@@ -256,133 +256,143 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: dynamicTheme,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Food for Not Waste'),
-        ),
-        body: Container(
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: TextShow("Location"),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0, right: 30.0),
-                      child: Opacity(
-                        opacity: 0.7,
-                        child: TextFormField(
-                          controller: _place,
-                          decoration: InputDecoration(
-                            hintText: 'Example: 商101',
-                            border: OutlineInputBorder(),
-                          ),
+        data: dynamicTheme,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text('Food for Not Waste'),
+            ),
+            body: Container(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextShow("Location"),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: TextShow("Description & Quantity"),
-                    ),
-                    Column(
-                      children: [
-                        for (int i = 0; i < how_many_textform; i++)
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: _addNewTextFormField(i),
-                          ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Visibility(
-                          visible: how_many_textform>1?true:false,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.4,
-                            child:ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  how_many_textform--;
-                                  _controllers.removeLast();
-                                  _quantities.removeLast();
-                                });
-                              },
-                              child: Icon(Icons.delete_rounded),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10.0, right: 30.0),
+                          child: Opacity(
+                            opacity: 0.7,
+                            child: TextFormField(
+                              controller: _place,
+                              decoration: InputDecoration(
+                                hintText: 'Example: 商101',
+                                border: OutlineInputBorder(),
+                              ),
                             ),
                           ),
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          child:ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                how_many_textform++;
-                                _controllers.add(TextEditingController());
-                                _quantities.add(0);
-                              });
-                            },
-                            child: Icon(Icons.add),
-                          ),
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: TextShow("Location Picture"),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(25),
-                      child: GestureDetector(
-                        onTap: selectFile,
-                        child: pickedFile != null
-                            ? Container(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          height: MediaQuery.of(context).size.width,
-                          child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: Image.file(
-                              File(pickedFile!.path!),
-                            ),
-                          ),
-                        )
-                            : add_picture_box(context),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => uploadFile(context),
-                      child: Text("Upload File"),
-                    ),
-                    if (_isUploading && _progressController != null)
-                      StreamBuilder<double>(
-                        stream: _progressController!.stream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return Column(
-                              children: [
-                                Text('Uploading... Progress: ${snapshot.data?.toStringAsFixed(2)}%'),
-                                SizedBox(height: 20),
-                                LinearProgressIndicator(
-                                  value: snapshot.data! / 100,
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextShow("Description & Quantity"),
+                        ),
+                        Column(
+                          children: [
+                            for (int i = 0; i < how_many_textform; i++)
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: _addNewTextFormField(i),
+                              ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Visibility(
+                              visible: how_many_textform>1?true:false,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                child:ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      how_many_textform--;
+                                      _controllers.removeLast();
+                                      _quantities.removeLast();
+                                    });
+                                  },
+                                  child: Icon(Icons.delete_rounded),
                                 ),
-                              ],
-                            );
-                          } else {
-                            return Container();
-                          }
-                        },
-                      ),
-                  ],
-                ),
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              child:ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    how_many_textform++;
+                                    _controllers.add(TextEditingController());
+                                    _quantities.add(0);
+                                  });
+                                },
+                                child: Icon(Icons.add),
+                              ),
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: TextShow("Location Picture"),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(25),
+                          child: GestureDetector(
+                            onTap: selectFile,
+                            child: pickedFile != null
+                                ? Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              height: MediaQuery.of(context).size.width,
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Image.file(
+                                  File(pickedFile!.path!),
+                                ),
+                              ),
+                            )
+                                : add_picture_box(context),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => uploadFile(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          child: Text(
+                            "確定結果",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        if (_isUploading && _progressController != null)
+                          StreamBuilder<double>(
+                            stream: _progressController!.stream,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Column(
+                                  children: [
+                                    Text('Uploading... Progress: ${snapshot.data?.toStringAsFixed(2)}%'),
+                                    SizedBox(height: 20),
+                                    LinearProgressIndicator(
+                                      value: snapshot.data! / 100,
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ),
+            )
+        )
     );
   }
 }

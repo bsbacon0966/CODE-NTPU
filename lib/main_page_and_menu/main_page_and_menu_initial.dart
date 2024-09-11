@@ -7,6 +7,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import '../color_decide.dart';
 import '../firebase_store/fire_store_for_loading_personal_data.dart';
 import '../firebase_store/fire_store_for_news.dart';
+import '../firebase_store/how_many_times.dart';
 import '../main_page/School_Table/SchoolTableTime.dart';
 import '../main_page/main_first.dart';
 import '../main_page/main_second.dart';
@@ -37,6 +38,7 @@ class _TheBigTotalPageState extends State<TheBigTotalPage> {
     await loadUserSchoolID();
     await loadUserColorDecide();
     await loadNews();
+    updateAppEntryCount(); //紀錄登入次數
     setState(() {
       isLoading = false;
     });
@@ -68,7 +70,6 @@ class _TheBigTotalPageState extends State<TheBigTotalPage> {
     if (isLoading) {
       return Center(child: CircularProgressIndicator());
     }
-
     // 動態調整appbar跟常用背景，讓他們兩個吃的到FIREBASE資訊
     final ThemeData dynamicTheme = ThemeData(
       appBarTheme: AppBarTheme(

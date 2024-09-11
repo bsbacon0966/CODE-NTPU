@@ -169,7 +169,17 @@ class _DetailPageState extends State<DetailPage> {
               SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () => _showConfirmationDialog(context),
-                child: Text('確定上傳資訊'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: Text(
+                  '確定上傳資訊',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ],
           ),

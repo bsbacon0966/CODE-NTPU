@@ -24,17 +24,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController schoolIDController = TextEditingController();
   final TextEditingController passwordconfirmationController = TextEditingController();
 
-  Widget TextField(String info,TextEditingController controller_info,bool isobscure){ // 輸入和統一規格
-    return TextFormField(
-      controller: controller_info,
-      decoration: InputDecoration(
-        hintText: info,
-        border: OutlineInputBorder(),
-      ),
-      obscureText: isobscure
-    );
-  }
-
   Future<void> registerForUser() async {
     showDialog(
       context: context,
@@ -119,22 +108,36 @@ class _RegisterPageState extends State<RegisterPage> {
       );
     }
   }
-
+  Widget customTextField(String info, TextEditingController controller_info, bool isobscure, IconData icon_form) {
+    return TextFormField(
+      controller: controller_info,
+      decoration: InputDecoration(
+        hintText: info,
+        prefixIcon: Icon(icon_form),
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.amber, width: 4),
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      obscureText: isobscure,
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xfff0f3fc),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField("學號(school ID)",schoolIDController,false),
+            customTextField("學號(school ID)",schoolIDController,false,Icons.school),
             SizedBox(height: 16),
-            TextField("Email",usernameController,false),
+            customTextField("Email",usernameController,false,Icons.email),
             SizedBox(height: 16),
-            TextField("Password",passwordController,true),
+            customTextField("Password",passwordController,true,Icons.lock),
             SizedBox(height: 16),
-            TextField("Password Confirmation",passwordconfirmationController,true),
+            customTextField("Password Confirmation",passwordconfirmationController,true,Icons.check_box),
             SizedBox(height: 16),
             Container(
               width: MediaQuery.of(context).size.width * 0.90,
