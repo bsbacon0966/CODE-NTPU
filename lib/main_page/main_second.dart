@@ -11,7 +11,9 @@ import '../event_notify.dart';
 import '../food_for_not_waste/food_for_not_waste.dart';
 import '../food_for_not_waste/food_for_not_waste_main_page.dart';
 import '../love_to_rain.dart';
+import 'dart:ui';
 
+import '../map_for_eating/map_for_eating.dart';
 List<bool> pinned = [false, false, false, false, false];
 
 class the_total_page_2 extends StatefulWidget {
@@ -59,12 +61,12 @@ class _the_total_page_2 extends State<the_total_page_2> {
 
   Widget _build_main_service_page() {
     List<Widget> containers = [
-      _buildContainer(0, Colors.lightGreen[100], '愛心傘租借/歸還', 'assets/test_back.png', love_to_rain()),
-      _buildContainer(1, Colors.yellow[200], '北大連結集中區', 'assets/ux.png', ScheduleAndLinks()),
-      _buildContainer(2, Colors.blue[100], '問卷調查集合處', 'assets/list.png', Question()),
+      _buildContainer(0, Colors.lightGreen[100], '愛心傘租借/歸還', 'assets/warning.png', love_to_rain()),
+      _buildContainer(1, Colors.yellow[200], '北大連結集中區', 'assets/link_block_3.png', ScheduleAndLinks()),
+      _buildContainer(2, Colors.blue[100], '問卷調查集合處', 'assets/text_block_2.png', FortuneWheelDemo()),
       _buildContainer(3, Colors.red[100], '惜福專區', 'assets/bibimbap.png',  FoodForNotWasteMainPage()),
-      _buildContainer(4, Colors.purple[100], '活動宣傳', 'assets/event.png', event_notify()),
-      _buildContainer(5, Colors.purple[100], '測試者聊天室', 'assets/event.png', TalkToMe()), //測試服，之後是CSVloader
+      _buildContainer(4, Colors.purple[100], '活動宣傳', 'assets/warning.png', event_notify()),
+      _buildContainer(5, Colors.purple[100], '測試者聊天室', 'assets/chat_block_5.png', TalkToMe()), //測試服，之後是CSVloader
     ];
 
     List<Widget> orderedContainers = [];
@@ -90,64 +92,91 @@ class _the_total_page_2 extends State<the_total_page_2> {
           duration: Duration(seconds: 1),
           height: MediaQuery.of(context).size.height * 0.15,
           decoration: BoxDecoration(
-            color: color,
             borderRadius: BorderRadius.circular(15.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.black,
+                color: Colors.black.withOpacity(0.3),
                 spreadRadius: 1,
+                blurRadius: 5,
                 offset: Offset(5, 5),
               ),
             ],
             border: Border.all(
-              color: Colors.black, // 黑色外框
-              width: 2.0, // 外框宽度，可根据需要调整
+              color: Colors.black,
+              width: 2.0,
             ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Stack(
             children: [
-              Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(10.0),
-                    width: 70,
-                    height: 70,
-                    child: ClipRRect(
-                      child: Image.asset(
-                        imagePath,
-                        fit: BoxFit.cover,
+              // Blurred background image
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      imagePath,
+                      fit: BoxFit.cover,
+                      color: Colors.black.withOpacity(0.3),
+                      colorBlendMode: BlendMode.darken,
+                    ),
+                    // Blur effect applied to the image
+                    BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                      child: Container(
+                        color: Colors.transparent,
                       ),
                     ),
-                  ),
-                  Container(
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    pinned[id] = !pinned[id];
-                    updateUserFavoriteService();
-                    _swapContainers();
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: color,
-                  minimumSize: Size(50, 50),
-                  padding: EdgeInsets.zero,
+                  ],
                 ),
-                child: Icon(
-                  pinned[id] ? Icons.favorite : Icons.favorite_border,
-                  color: pinned[id] ? Colors.red : Colors.black45,
+              ),
+              // Centered content above the blurred image
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Text styling
+                      Expanded(
+                        child: Text(
+                          text,
+                          textAlign: TextAlign.center, // Center text horizontally
+                          style: TextStyle(
+                            fontSize: 28.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 3.0,
+                                color: Colors.black.withOpacity(0.5),
+                                offset: Offset(1, 1),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Improved button styling
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            pinned[id] = !pinned[id];
+                            updateUserFavoriteService();
+                            _swapContainers();
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(12),
+                          backgroundColor: Colors.white.withOpacity(0.8),
+                        ),
+                        child: Icon(
+                          pinned[id] ? Icons.favorite : Icons.favorite_border,
+                          color: pinned[id] ? Colors.red : Colors.black45,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -156,6 +185,7 @@ class _the_total_page_2 extends State<the_total_page_2> {
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

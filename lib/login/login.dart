@@ -76,6 +76,38 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  void initState() {
+    super.initState();
+    // 在初始化時顯示警告窗
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showWarningDialog();
+    });
+  }
+
+  void _showWarningDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text('測試服注意事項'),
+        content: Text(
+        '1. 此測試服將從9/21開放至10/1 23:59，之後將會把資料庫完全刪除，您的任何資料將不會保留，並且將無法登入\n\n'
+            '2. 為了能夠記錄您在App中的操作（如您的課表資訊等），我們會收集您註冊時所使用的Email。請放心，此舉僅用於方便記錄個人操作資料，絕無意圖干涉或操控您的個人資訊。\n\n'
+            '3. 有任何問題還請回應給我!\n\n'
+            '4. 現階段製作人仍僅有一人進行開發與維護，製作不易，還請給予我鼓勵以及諒解!!',
+            style: TextStyle(
+              fontSize: 16,
+            ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('我知道了'),
+          ),
+        ],
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

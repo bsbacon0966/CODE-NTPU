@@ -16,12 +16,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
+  updateAppEntryCount();
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    updateAppEntryCount();
     FlutterNativeSplash.remove();
     return GetMaterialApp(
       theme: ThemeData(

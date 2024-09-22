@@ -114,16 +114,24 @@ class _MenuPageState extends State<MenuPage> {
                 menu_list("個人設定", Icons.settings, () {
                   Get.to(() => PersonalInfoAdjust());
                 }),
-                /*menu_list("開發者環境", Icons.home, () {
+              ],
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.15,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                menu_list("開發者環境", Icons.home, () {
                   Get.to(() => NewsOverall());
-                }),*/    //先隱藏
+                }),//先隱藏
                 menu_list("留言管理", Icons.home, () {
                   Get.to(() => WarningContext());
                 }),
               ],
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.07,
             child: Column(

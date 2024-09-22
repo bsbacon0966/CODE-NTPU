@@ -84,7 +84,7 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                   headerStyle: CalendarHeaderStyle(
                     textStyle: TextStyle(
                       color: Color(color_decide[user_color_decide][3]),
-                      fontSize: 22,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -121,7 +121,7 @@ class _SchooltabletimeState extends State<Schooltabletime> {
                           Text(
                             appointment.subject,
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 12,
                               color: Colors.white,
                             ),
                           ),

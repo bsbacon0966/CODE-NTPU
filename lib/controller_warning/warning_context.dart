@@ -22,12 +22,30 @@ class _WarningContext extends State<WarningContext> {
     ),
     scaffoldBackgroundColor: Color(color_decide[user_color_decide][0]),
   );
-  void deleteContext(String docID,String execute_docID){
-    print(execute_docID);
-    _firestore.collection('talk_to_me').doc(execute_docID).delete().then((_) {
-      dismissContext(docID);
-    });
+
+  void deleteContext(String warningDocID, String messageIndex) async {
+    // 首先獲取當前的消息列表
+    DocumentSnapshot snapshot = await _firestore.collection('talktome').doc('message').get();
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+      List<dynamic> messages = List<dynamic>.from(data['messages'] ?? []);
+
+      // 從列表中刪除指定索引的消息
+      int index = int.parse(messageIndex);
+      if (index >= 0 && index < messages.length) {
+        messages.removeAt(index);
+
+        // 更新 Firebase 中的消息列表
+        await _firestore.collection('talktome').doc('message').set({
+          'messages': messages,
+        });
+
+        // 刪除警告文檔
+        dismissContext(warningDocID);
+      }
+    }
   }
+
   void dismissContext(String docID) {
     _firestore.collection('warning_for_creater').doc(docID).delete().then((_) {
       ToastService.showSuccessToast(
@@ -38,6 +56,7 @@ class _WarningContext extends State<WarningContext> {
       );
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -66,9 +85,9 @@ class _WarningContext extends State<WarningContext> {
                   final dataList = snapshot.data!.docs.map((doc) {
                     final data = doc.data() as Map<String, dynamic>;
                     return {
-                      'docID':doc.id,
-                      'context_ID':data['context_ID'],
-                      'context_info':data['context_info'],
+                      'docID': doc.id,
+                      'message_id': data['message_id'],
+                      'context_info': data['context_info'],
                       'reportReason': data['reportReason'],
                     };
                   }).toList();
@@ -115,7 +134,7 @@ class _WarningContext extends State<WarningContext> {
                                       style: TextStyle(
                                         fontSize: 18.0,
                                       ),
-                                      maxLines: 3, // Limit to 3 lines for content
+                                      maxLines: 3,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
@@ -140,7 +159,7 @@ class _WarningContext extends State<WarningContext> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    deleteContext(item['docID'],item["context_ID"]);
+                                    deleteContext(item['docID'], item["message_id"]);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     foregroundColor: Colors.white,

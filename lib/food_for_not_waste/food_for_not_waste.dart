@@ -26,56 +26,57 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
   List<int> _quantities = [0];
   int how_many_textform = 1;
 
-  Widget TextShow(String info){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          info,
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
-            color: Color(color_decide[user_color_decide][3]),
-          ),
+  Widget SectionTitle(String title) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Color(color_decide[user_color_decide][3]),
         ),
-        SizedBox(width: 1,),
-      ],
+      ),
     );
   }
-  Widget _addNewTextFormField(int index) {
-    return Padding(
-      padding: EdgeInsets.all(6.0),
-      child: Row(
-        children: [
-          Expanded(
-              child: Opacity(
-                opacity: 0.7,
-                child: TextFormField(
-                  controller: _controllers[index],
-                  decoration: InputDecoration(
-                    labelText: '食品資訊${index + 1}',
-                    hintText: "ex:雞腿便當",
-                    border: OutlineInputBorder(),
+
+  Widget ItemInput(int index) {
+    return Card(
+      elevation: 2,
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: _controllers[index],
+                decoration: InputDecoration(
+                  labelText: '食品資訊 ${index + 1}',
+                  hintText: "ex: 雞腿便當",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-              )
-          ),
-          InputQty.int(
-            maxVal: 100,
-            initVal: 0,
-            minVal: 0,
-            steps: 1,
-            onQtyChanged: (val) {
-              _quantities[index] = val;
-            },
-            decoration: QtyDecorationProps(
-              isBordered: false,
-              borderShape: BorderShapeBtn.circle,
-              iconColor: Color(color_decide[user_color_decide][3]),
-              width: 12,
+              ),
             ),
-          ),
-        ],
+            SizedBox(width: 16),
+            InputQty.int(
+              maxVal: 100,
+              initVal: 0,
+              minVal: 0,
+              steps: 1,
+              onQtyChanged: (val) {
+                _quantities[index] = val;
+              },
+              decoration: QtyDecorationProps(
+                isBordered: true,
+                btnColor: Color(color_decide[user_color_decide][2]),
+                iconColor: Colors.white,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -90,64 +91,35 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
   }
 
   Future uploadFile(BuildContext context) async {
-    if(_place.text==""){
-      ToastService.showErrorToast(
-        context,
-        length: ToastLength.medium,
-        expandedHeight: 100,
-        message: "請填寫地點!",
-      );
+    if (_place.text.isEmpty) {
+      _showErrorToast(context, "請填寫地點!");
       return;
     }
-    else if (pickedFile == null) {
-      ToastService.showErrorToast(
-        context,
-        length: ToastLength.medium,
-        expandedHeight: 100,
-        message: "必須上傳圖片，以便同學尋找!",
-      );
+    if (pickedFile == null) {
+      _showErrorToast(context, "必須上傳圖片，以便同學尋找!");
       return;
     }
-    else if(_controllers[0].text==""||_quantities[0]==0){
-      ToastService.showErrorToast(
-        context,
-        length: ToastLength.medium,
-        expandedHeight: 100,
-        message: "最少必須填寫一份資訊和數量!",
-      );
+    if (_controllers[0].text.isEmpty || _quantities[0] == 0) {
+      _showErrorToast(context, "最少必須填寫一份資訊和數量!");
       return;
     }
-    for(int i=0;i<_quantities.length;i++){
-      if(_controllers[i].text==""){
-        ToastService.showErrorToast(
-          context,
-          length: ToastLength.medium,
-          expandedHeight: 100,
-          message: "有資訊為空，為非法操作!",
-        );
+    for (int i = 0; i < _quantities.length; i++) {
+      if (_controllers[i].text.isEmpty) {
+        _showErrorToast(context, "有資訊為空，為非法操作!");
         return;
       }
-      if(_quantities[i]==0){
-        ToastService.showErrorToast(
-          context,
-          length: ToastLength.medium,
-          expandedHeight: 100,
-          message: "有資訊數量為0，為非法操作!",
-        );
+      if (_quantities[i] == 0) {
+        _showErrorToast(context, "有資訊數量為0，為非法操作!");
         return;
       }
     }
+
     final path = 'food_for_love/${pickedFile!.name}';
     final file = File(pickedFile!.path!);
     _progressController = StreamController<double>();
 
     try {
-      ToastService.showWarningToast(
-        context,
-        length: ToastLength.medium,
-        expandedHeight: 100,
-        message: "上傳中，請等到「上傳成功」，請勿離開!",
-      );
+      _showWarningToast(context, "上傳中，請等到「上傳成功」，請勿離開!");
       final ref = FirebaseStorage.instance.ref().child(path);
       final uploadTask = ref.putFile(file);
       setState(() {
@@ -160,12 +132,7 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
       await uploadTask.whenComplete(() async {
         downloadUrl = await ref.getDownloadURL();
         await saveToDatabase(downloadUrl!);
-        ToastService.showSuccessToast(
-          context,
-          length: ToastLength.medium,
-          expandedHeight: 100,
-          message: "上傳成功!",
-        );
+        _showSuccessToast(context, "上傳成功!");
         setState(() {
           _isUploading = false;
           pickedFile = null;
@@ -189,14 +156,41 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
     try {
       await FirebaseFirestore.instance.collection('your_collection').add({
         'imageUrl': url,
-        'timestamp':Timestamp.now(),
-        'place':_place.text,
+        'timestamp': Timestamp.now(),
+        'place': _place.text,
         'dataList': datalist,
       });
     } catch (e) {
       print('Failed to save URL to database: $e');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save URL to database: $e')));
     }
+  }
+
+  void _showErrorToast(BuildContext context, String message) {
+    ToastService.showErrorToast(
+      context,
+      length: ToastLength.medium,
+      expandedHeight: 100,
+      message: message,
+    );
+  }
+
+  void _showWarningToast(BuildContext context, String message) {
+    ToastService.showWarningToast(
+      context,
+      length: ToastLength.medium,
+      expandedHeight: 100,
+      message: message,
+    );
+  }
+
+  void _showSuccessToast(BuildContext context, String message) {
+    ToastService.showSuccessToast(
+      context,
+      length: ToastLength.medium,
+      expandedHeight: 100,
+      message: message,
+    );
   }
 
   @override
@@ -209,6 +203,54 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
     super.dispose();
   }
 
+  Widget ImagePickerWidget() {
+    return GestureDetector(
+      onTap: selectFile,
+      child: Container(
+        width: double.infinity,
+        height: 200,
+        margin: EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: Color(color_decide[user_color_decide][1]),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: pickedFile != null
+            ? ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Image.file(
+            File(pickedFile!.path!),
+            fit: BoxFit.cover,
+          ),
+        )
+            : Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.add_a_photo,
+              size: 48,
+              color: Color(color_decide[user_color_decide][3]),
+            ),
+            SizedBox(height: 16),
+            Text(
+              "Click to add an image",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Color(color_decide[user_color_decide][3]),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
   final ThemeData dynamicTheme = ThemeData(
     appBarTheme: AppBarTheme(
       color: Color(color_decide[user_color_decide][2]),
@@ -216,182 +258,164 @@ class _FoodForNotWasteState extends State<FoodForNotWaste> {
     scaffoldBackgroundColor: Color(color_decide[user_color_decide][0]),
   );
 
-  Widget add_picture_box(BuildContext context) {
-    return GestureDetector(
-      onTap: selectFile,
-      child: Opacity(
-        opacity: 0.7,
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.7,
-          height: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Color(color_decide[user_color_decide][1]),
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.add,
-                  size: 40,
-                  color:user_color_decide==0?Colors.white:Color(color_decide[user_color_decide][3]),
-                ),
-                Text(
-                  "Tap here to add an image",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color:user_color_decide==0?Colors.white:Color(color_decide[user_color_decide][3]),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Theme(
         data: dynamicTheme,
-        child: Scaffold(
-            appBar: AppBar(
-              title: Text('Food for Not Waste'),
+        child:Scaffold(
+          appBar: AppBar(
+            title: Text(
+                'Food for Not Waste',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600
+              ),
             ),
-            body: Container(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: TextShow("Location"),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10.0, right: 30.0),
-                          child: Opacity(
-                            opacity: 0.7,
-                            child: TextFormField(
-                              controller: _place,
-                              decoration: InputDecoration(
-                                hintText: 'Example: 商101',
-                                border: OutlineInputBorder(),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: TextShow("Description & Quantity"),
-                        ),
-                        Column(
-                          children: [
-                            for (int i = 0; i < how_many_textform; i++)
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: _addNewTextFormField(i),
-                              ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Visibility(
-                              visible: how_many_textform>1?true:false,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                child:ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      how_many_textform--;
-                                      _controllers.removeLast();
-                                      _quantities.removeLast();
-                                    });
-                                  },
-                                  child: Icon(Icons.delete_rounded),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child:ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    how_many_textform++;
-                                    _controllers.add(TextEditingController());
-                                    _quantities.add(0);
-                                  });
-                                },
-                                child: Icon(Icons.add),
-                              ),
-                            )
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: TextShow("Location Picture"),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(25),
-                          child: GestureDetector(
-                            onTap: selectFile,
-                            child: pickedFile != null
-                                ? Container(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              height: MediaQuery.of(context).size.width,
-                              child: FittedBox(
-                                fit: BoxFit.contain,
-                                child: Image.file(
-                                  File(pickedFile!.path!),
-                                ),
-                              ),
-                            )
-                                : add_picture_box(context),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () => uploadFile(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red,
-                          ),
-                          child: Text(
-                            "確定結果",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        if (_isUploading && _progressController != null)
-                          StreamBuilder<double>(
-                            stream: _progressController!.stream,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return Column(
-                                  children: [
-                                    Text('Uploading... Progress: ${snapshot.data?.toStringAsFixed(2)}%'),
-                                    SizedBox(height: 20),
-                                    LinearProgressIndicator(
-                                      value: snapshot.data! / 100,
-                                    ),
-                                  ],
-                                );
-                              } else {
-                                return Container();
-                              }
-                            },
-                          ),
-                      ],
+            elevation: 0,
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SectionTitle("Location"),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: TextFormField(
+                    controller: _place,
+                    decoration: InputDecoration(
+                      hintText: 'Example: 商101',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
                   ),
-                ],
-              ),
-            )
+                ),
+                SectionTitle("Description & Quantity"),
+                for (int i = 0; i < how_many_textform; i++) ItemInput(i),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (how_many_textform > 1)
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                how_many_textform--;
+                                _controllers.removeLast();
+                                _quantities.removeLast();
+                              });
+                            },
+                            icon: Icon(
+                              Icons.remove,
+                              color: Colors.white,
+                            ),
+                            label: Text(
+                              "Remove Item",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (how_many_textform > 1) SizedBox(width: 16),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              how_many_textform++;
+                              _controllers.add(TextEditingController());
+                              _quantities.add(0);
+                            });
+                          },
+                          icon: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          ),
+                          label: Text(
+                            "Add Item",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SectionTitle("Location Picture"),
+                ImagePickerWidget(),
+                SizedBox(height: 24),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: ElevatedButton(
+                    onPressed: () => uploadFile(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "確定結果",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                if (_isUploading && _progressController != null)
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: StreamBuilder<double>(
+                      stream: _progressController!.stream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Column(
+                            children: [
+                              Text(
+                                'Uploading... Progress: ${snapshot.data?.toStringAsFixed(2)}%',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              SizedBox(height: 8),
+                              LinearProgressIndicator(
+                                value: snapshot.data! / 100,
+                                minHeight: 10,
+                                backgroundColor: Colors.grey[300],
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Container();
+                        }
+                      },
+                    ),
+                  ),
+                SizedBox(height: 24),
+              ],
+            ),
+          ),
         )
     );
   }

@@ -9,7 +9,7 @@ Future<void> createUserDocument(UserCredential? userCredential , String schoolID
     "email":userCredential?.user!.email,
     "schoolID":schoolID,
     "favorite_hyperlink":[true, true, true, true, false, false, false, false, false, false],
-    "favorite_service":[false, false, false, false, false,true],
+    "favorite_service":[false, true, false, true, false,true],
     "personal_schedule":[],
     "user_color_decide":0,
   });

@@ -22,6 +22,8 @@ class _TalkToMeState extends State<TalkToMe> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController contextController = TextEditingController();
 
+  List<Map<String, dynamic>> _messages = [];
+
   final ThemeData dynamicTheme = ThemeData(
     appBarTheme: AppBarTheme(
       color: Color(color_decide[user_color_decide][2]),
@@ -29,17 +31,52 @@ class _TalkToMeState extends State<TalkToMe> {
     scaffoldBackgroundColor: Color(color_decide[user_color_decide][0]),
   );
 
-  // Function to send the message to Firestore
+  @override
+  void initState() {
+    super.initState();
+    _loadMessages();
+  }
+
+  void _loadMessages() async {
+    DocumentSnapshot snapshot = await _firestore.collection('talktome').doc('message').get();
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+      setState(() {
+        _messages = List<Map<String, dynamic>>.from(data['messages'] ?? []);
+      });
+    }
+  }
+
+  String formatTimestamp(DateTime? timestamp) {
+    if (timestamp == null) {
+      return 'Unknown time';
+    }
+
+    final month = timestamp.month.toString().padLeft(2, '0');
+    final day = timestamp.day.toString().padLeft(2, '0');
+    final hour = timestamp.hour.toString().padLeft(2, '0');
+    final minute = timestamp.minute.toString().padLeft(2, '0');
+
+    return '$month/$day $hour:$minute';
+  }
+
   Future<void> sendMessage(String name, String context, bool is_creater) async {
-    await _firestore.collection('talk_to_me').add({
+    final newMessage = {
       'name': name,
       'context': context,
-      'is_creater':false,
-      'timestamp': FieldValue.serverTimestamp(),
+      'is_creater': is_creater,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+    };
+
+    setState(() {
+      _messages.insert(0, newMessage);
+    });
+
+    await _firestore.collection('talktome').doc('message').set({
+      'messages': _messages,
     });
   }
 
-  // Function to show the dialog for input
   void showInputDialog() {
     showDialog(
       context: context,
@@ -68,15 +105,9 @@ class _TalkToMeState extends State<TalkToMe> {
             ),
             TextButton(
               onPressed: () {
-                String name;
-                if (nameController.text.isEmpty) {
-                  name = "(匿名)";
-                } else {
-                  name = nameController.text;
-                }
+                String name = nameController.text.isEmpty ? "(匿名)" : nameController.text;
 
                 if (contextController.text.length > 40) {
-                  // 顯示錯誤訊息
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -95,7 +126,7 @@ class _TalkToMeState extends State<TalkToMe> {
                     },
                   );
                 } else {
-                  sendMessage(name, contextController.text,false);
+                  sendMessage(name, contextController.text, false);
                   nameController.clear();
                   contextController.clear();
                   Navigator.of(context).pop();
@@ -109,7 +140,7 @@ class _TalkToMeState extends State<TalkToMe> {
     );
   }
 
-  void showWarningDialog(String docID, String info) {
+  void showWarningDialog(String messageId, String info) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -168,7 +199,7 @@ class _TalkToMeState extends State<TalkToMe> {
                 TextButton(
                   onPressed: () {
                     if (_selectedReason != null) {
-                      handleReport(docID, info, _selectedReason!);
+                      handleReport(messageId, info, _selectedReason!);
                       ToastService.showSuccessToast(
                         context,
                         length: ToastLength.medium,
@@ -177,7 +208,6 @@ class _TalkToMeState extends State<TalkToMe> {
                       );
                       Navigator.of(context).pop();
                     } else {
-                      // Show error if no option is selected
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -207,9 +237,9 @@ class _TalkToMeState extends State<TalkToMe> {
     );
   }
 
-  Future<void> handleReport(String docID, String context, ReportReason reason) async {
+  Future<void> handleReport(String messageId, String context, ReportReason reason) async {
     await _firestore.collection('warning_for_creater').add({
-      'context_ID': docID,
+      'message_id': messageId,
       'context_info': context,
       'reportReason': reason.toString(),
     });
@@ -221,145 +251,110 @@ class _TalkToMeState extends State<TalkToMe> {
       data: dynamicTheme,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("測試服:聊天區"),
+          title: Text(
+            "測試服:聊天區",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
         ),
         body: Column(
           children: [
             SizedBox(height: 15),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.60,
-              height: MediaQuery.of(context).size.height * 0.08,
-              decoration: BoxDecoration(
-                color: Color(color_decide[user_color_decide][3]),
-                borderRadius: BorderRadius.circular(15.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black,
-                    spreadRadius: 1,
-                    offset: Offset(5, 5),
-                  ),
-                ],
-                border: Border.all(
-                  color: Colors.black,
-                  width: 2.0,
-                ),
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  showInputDialog();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(color_decide[user_color_decide][3]),
-                ),
-                child: Text(
-                  "我要新增資訊",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 15),
             Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: _firestore.collection('talk_to_me')
-                    .orderBy('timestamp', descending: true) // Ordering by timestamp
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  }
-                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return Center(child: Text('No data available.'));
-                  }
+              child: ListView.builder(
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  final item = _messages[index];
+                  final dateTime = DateTime.fromMillisecondsSinceEpoch(item['timestamp']);
 
-                  final dataList = snapshot.data!.docs.map((doc) {
-                    final data = doc.data() as Map<String, dynamic>;
-                    return {
-                      'docID': doc.id,
-                      'name': data['name'] ?? '',
-                      'context': data['context'] ?? '',
-                      'isCreater':data['is_creater']??false,
-                    };
-                  }).toList();
-
-                  return ListView.builder(
-                    itemCount: dataList.length,
-                    itemBuilder: (context, index) {
-                      final item = dataList[index];
-                      return Container(
-                        margin: const EdgeInsets.all(8.0),
-                        padding: const EdgeInsets.all(12.0),
-                        height: MediaQuery.of(context).size.height * 0.15,
-                        decoration: BoxDecoration(
-                          color: item['isCreater']? Colors.limeAccent[100]:Colors.white,
-                          borderRadius: BorderRadius.circular(15.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 6.0,
-                              spreadRadius: 1.0,
-                            ),
-                          ],
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                    decoration: BoxDecoration(
+                      color: item['is_creater'] ? Colors.yellow[100] : Colors.blue[100],
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                        bottomLeft: Radius.circular(0),
+                        bottomRight: Radius.circular(30),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 8.0,
+                          offset: Offset(2, 4),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item['name'] ?? 'No Name',
-                                    style: TextStyle(
-                                      fontSize: 26.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 8),
-                                  Flexible(
-                                    child: Text(
-                                      item['context'] ?? 'No Context',
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                      ),
-                                      maxLines: 3, // Limit to 3 lines for content
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item['name'],
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                showWarningDialog(item["docID"], item["context"]);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                minimumSize: Size(50, 50),
-                                padding: EdgeInsets.zero,
+                              SizedBox(height: 5),
+                              Text(
+                                item['context'],
+                                style: TextStyle(fontSize: 14),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              child: Icon(
-                                Icons.warning,
-                                color: Colors.red,
+                              SizedBox(height: 10),
+                              Text(
+                                formatTimestamp(dateTime),
+                                style: TextStyle(fontSize: 12, color: Colors.grey),
                               ),
-                            ),
-                          ],
+                              SizedBox(height: 10),
+                            ],
+                          ),
                         ),
-                      );
-                    },
+                        SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            showWarningDialog(index.toString(), item["context"]);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            minimumSize: Size(50, 50),
+                            padding: EdgeInsets.zero,
+                          ),
+                          child: Icon(
+                            Icons.warning,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
             ),
+            SizedBox(height: 20),
           ],
+        ),
+        floatingActionButton: SizedBox(
+          height: 60,
+          width: 120,
+          child: FloatingActionButton(
+            onPressed: showInputDialog,
+            backgroundColor: Color(color_decide[user_color_decide][3]),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Text(
+              "加入聊天",
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ),
       ),
     );

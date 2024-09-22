@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "736051025902",
-    "project_id": "codexntpu",
-    "storage_bucket": "codexntpu.appspot.com"
+    "project_number": "86201319521",
+    "project_id": "codexntpu-41ef6",
+    "storage_bucket": "codexntpu-41ef6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:736051025902:android:9e5562cb92fb7e3525e0ff",
+        "mobilesdk_app_id": "1:86201319521:android:48f2a47f6e371edf77ea20",
         "android_client_info": {
           "package_name": "com.example.interviewer"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC1DTh3R7bKHnA0jt70sP16l6Kr3fwS634"
+          "current_key": "AIzaSyD5NmZFkM7N9ys3mASc0xT8wbfK3gGxolc"
         }
       ],
       "services": {

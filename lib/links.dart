@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'color_decide.dart';
+
 final Uri _lms = Uri.parse('https://lms3.ntpu.edu.tw/login/index.php');
 final Uri _SIS = Uri.parse('https://cof.ntpu.edu.tw/student_new.htm');
 final Uri _leave = Uri.parse('https://cof.ntpu.edu.tw/pls/acad2/leave_sys.home');
@@ -332,247 +334,259 @@ class _ScheduleAndLinks extends State<ScheduleAndLinks> {
         )
     );
   }
+
+  final ThemeData dynamicTheme = ThemeData(
+    appBarTheme: AppBarTheme(
+      color: Color(color_decide[user_color_decide][2]),
+    ),
+    scaffoldBackgroundColor: Color(color_decide[user_color_decide][0]),
+  );
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-            '數位學院2.0本應該在的QQ',
-          style: TextStyle(
-            color: Colors.white,
+    return Theme(
+      // Apply the dynamic theme
+        data: dynamicTheme,
+        child:Scaffold(
+          appBar: AppBar(
+            title: Text(
+              '數位學院2.0本應該在的QQ',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
           ),
-        ),
-      ),
-      body: Container(
-        alignment: Alignment.topCenter,
-        child: ListView(
-          children: [
-            Column(
+          body: Container(
+            alignment: Alignment.topCenter,
+            child: ListView(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(left:10.0,top: 10.0),
-                  child:Align(
-                    alignment: Alignment.centerLeft,
-                    child:Opacity(
-                        opacity: 0.6,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 3.0),
-                              child: Container(
-                                width: 27,
-                                child: Image.asset(
-                                  "assets/resume.png",
-                                  fit: BoxFit.cover,
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left:10.0,top: 10.0),
+                      child:Align(
+                        alignment: Alignment.centerLeft,
+                        child:Opacity(
+                            opacity: 0.6,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 3.0),
+                                  child: Container(
+                                    width: 27,
+                                    child: Image.asset(
+                                      "assets/resume.png",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            SizedBox(width:5),
-                            Text(
-                              "學生個人資訊",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      link_box(context, "數位學院3.0", "assets/test_back.png", _lms),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      link_box(context, "學生資訊系統", "assets/test_back.png", _SIS),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      link_box(context, "請假系統", "assets/test_back.png", _leave),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      empty_box(),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left:10.0,top: 10.0),
-                  child:Align(
-                    alignment: Alignment.centerLeft,
-                    child:Opacity(
-                        opacity: 0.6,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 3.0),
-                              child: Container(
-                                width: 27,
-                                child: Image.asset(
-                                  "assets/school_event.png",
-                                  fit: BoxFit.cover,
+                                SizedBox(width:5),
+                                Text(
+                                  "學生個人資訊",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                  ),
                                 ),
-                              ),
-                            ),
-                            SizedBox(width:5),
-                            Text(
-                              "學校網站資訊",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ],
-                        )
+                              ],
+                            )
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      link_box(context, "學校講座報名", "assets/test_back.png", _event),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      link_box_with_dialog(context, "各系網站", "assets/test_back.png"),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      link_box(context, "北大軟體授權網", "assets/test_back.png", _csd),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      link_box(context, "北大行事曆", "assets/test_back.png", _oaa),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left:10.0,top: 10.0),
-                  child:Align(
-                    alignment: Alignment.centerLeft,
-                    child:Opacity(
-                        opacity: 0.6,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 3.0),
-                              child: Container(
-                                width: 27,
-                                child: Image.asset(
-                                  "assets/book-stack.png",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width:5),
-                            Text(
-                              "圖書館系列",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ],
-                        )
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      link_box(context, "圖書館登入", "assets/test_back.png", _LIB),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      link_box(context, "圖書館座位預約", "assets/test_back.png", _READ),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left:10.0,top: 10.0),
-                  child:Align(
-                    alignment: Alignment.centerLeft,
-                    child:Opacity(
-                      opacity: 0.6,
+                    Padding(
+                      padding: EdgeInsets.only(top: 15),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 3.0),
-                            child: Container(
-                              width: 27,
-                              child: Image.asset(
-                                "assets/internet.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width:5),
-                          Text(
-                            "學長姊留下來的好用網站",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          link_box(context, "數位學院3.0", "assets/test_back.png", _lms),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          link_box(context, "學生資訊系統", "assets/test_back.png", _SIS),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                         ],
-                      )
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          link_box(context, "請假系統", "assets/test_back.png", _leave),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          empty_box(),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      link_box(context, "選課大全", "assets/test_back.png", _no21),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                      empty_box(),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left:10.0,top: 10.0),
+                      child:Align(
+                        alignment: Alignment.centerLeft,
+                        child:Opacity(
+                            opacity: 0.6,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 3.0),
+                                  child: Container(
+                                    width: 27,
+                                    child: Image.asset(
+                                      "assets/school_event.png",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width:5),
+                                Text(
+                                  "學校網站資訊",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ],
+                            )
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          link_box(context, "學校講座報名", "assets/test_back.png", _event),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          link_box_with_dialog(context, "各系網站", "assets/test_back.png"),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          link_box(context, "北大軟體授權網", "assets/test_back.png", _csd),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          link_box(context, "北大行事曆", "assets/test_back.png", _oaa),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left:10.0,top: 10.0),
+                      child:Align(
+                        alignment: Alignment.centerLeft,
+                        child:Opacity(
+                            opacity: 0.6,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 3.0),
+                                  child: Container(
+                                    width: 27,
+                                    child: Image.asset(
+                                      "assets/book-stack.png",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width:5),
+                                Text(
+                                  "圖書館系列",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ],
+                            )
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          link_box(context, "圖書館登入", "assets/test_back.png", _LIB),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          link_box(context, "圖書館座位預約", "assets/test_back.png", _READ),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left:10.0,top: 10.0),
+                      child:Align(
+                        alignment: Alignment.centerLeft,
+                        child:Opacity(
+                            opacity: 0.6,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 3.0),
+                                  child: Container(
+                                    width: 27,
+                                    child: Image.asset(
+                                      "assets/internet.png",
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width:5),
+                                Text(
+                                  "學長姊留下來的好用網站",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ],
+                            )
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          link_box(context, "選課大全", "assets/test_back.png", _no21),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                          empty_box(),
+                          SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                        ],
+                      ),
+                    ),
+                  ],
+
                 ),
               ],
-
             ),
-          ],
-        ),
-      ),
+          ),
+        )
     );
   }
 }
